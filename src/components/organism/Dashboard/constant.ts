@@ -1,0 +1,58 @@
+export const tableData = [
+	{
+		id: 1,
+		name: "John Michael",
+		gender: "MAle",
+		date: "23/04/18",
+		number: "+880 123456789",
+	},
+	{
+		id: 2,
+		name: "Alexa Liras",
+		gender: "Male",
+		date: "23/04/18",
+		number: "+880 123456789",
+	},
+	{
+		id: 3,
+		name: "Laurent Perrier",
+		gender: "Famale",
+		date: "19/09/17",
+		number: "+880 123456789",
+	},
+	{
+		id: 4,
+		name: "Michael Levi",
+		gender: "Male",
+		date: "24/12/08",
+		number: "+880 123456789",
+	},
+	{
+		id: 5,
+		name: "Richard Gran",
+		gender: "Manager",
+		date: "04/10/21",
+		number: "+880 123456789",
+	},
+	{
+		id: 6,
+		name: "Laurent Perrier",
+		gender: "Famale",
+		date: "19/09/17",
+		number: "+880 123456789",
+	},
+	{
+		id: 7,
+		name: "Michael Levi",
+		gender: "Male",
+		date: "24/12/08",
+		number: "+880 123456789",
+	},
+	{
+		id: 8,
+		name: "Richard Gran",
+		gender: "Manager",
+		date: "04/10/21",
+		number: "+880 123456789",
+	},
+];

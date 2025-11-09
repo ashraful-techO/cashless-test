@@ -1,0 +1,152 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--primary: #ff0065;
+	--secondary: #212529;
+	--default: #f6f9f9;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+p {
+	@apply text-secondary text-xs md:text-sm;
+}
+
+*::-webkit-scrollbar {
+	width: 5px;
+}
+
+*::-webkit-scrollbar-track {
+	border-radius: 10px;
+	background-color: #ececec;
+}
+
+*::-webkit-scrollbar-thumb {
+	background-color: #a1a1a1;
+	border-radius: 10px;
+}
+
+.react-datepicker-wrapper {
+	width: 100%;
+}
+.react-datepicker {
+	display: flex !important;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	font-size: 0.9rem;
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 4px 11px rgba(0, 0, 0, 0.1);
+	border: 0;
+	padding: 0.5rem;
+	flex-direction: row-reverse;
+	left: -50px;
+
+	.react-datepicker__header {
+		background-color: white;
+	}
+	.react-datepicker__children-container {
+		width: 7rem;
+		padding: 0;
+		margin: 0;
+	}
+	.react-datepicker__navigation {
+		top: 18px;
+	}
+	.react-datepicker__triangle {
+		&::after {
+			border-bottom-color: white;
+		}
+	}
+	.react-datepicker__day--today {
+		color: white;
+		font-weight: 600;
+	}
+
+	.react-datepicker__day--in-range {
+		background-color: var(--primary);
+	}
+	.react-datepicker__day--in-range:hover {
+		background-color: var(--primary);
+	}
+	.react-datepicker__day--selected {
+		background-color: #ff0065;
+	}
+	.react-datepicker__day--selected:hover {
+		background-color: #ff0065;
+	}
+
+	.react-datepicker__day--keyboard-selected {
+		background-color: #ea06614b;
+		color: white;
+	}
+
+	.react-datepicker__day--keyboard-selected:hover {
+		background-color: #ff0065;
+	}
+}
+.react-datepicker__input-container {
+	input {
+		border: 1px solid rgb(224 224 224);
+		border-radius: 4px;
+		padding: 4px 16px;
+		background-color: transparent;
+		height: 42px;
+		width: 100%;
+	}
+	input:focus {
+		outline-color: var(--primary);
+	}
+}
+.react-datepicker__input-container input::placeholder {
+	font-size: 14px;
+}
+.react-datepicker__input-container input {
+	font-size: 14px;
+}
+.react-datepicker__close-icon::after {
+	background-color: var(--primary);
+}
+.react-datepicker__time-container
+	.react-datepicker__time
+	.react-datepicker__time-box
+	ul.react-datepicker__time-list
+	li.react-datepicker__time-list-item--selected {
+	background-color: var(--primary);
+}
+
+.custom-scrollbar {
+	padding-bottom: 12px;
+	/* Add padding to create a gap for the scrollbar */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+	height: 8px;
+	/* Set the scrollbar height */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+	background-color: #718096;
+	/* Scrollbar thumb color */
+	border-radius: 10px;
+	/* Rounded corners for the thumb */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+	background-color: var(--primary);
+	/* Thumb hover color */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+	background-color: #edf2f7;
+	/* Scrollbar track color */
+	border-radius: 10px;
+	/* Rounded corners for the track */
+}
+
+.no-overflow {
+	position: relative !important ;
+	overflow: visible !important;
+}
