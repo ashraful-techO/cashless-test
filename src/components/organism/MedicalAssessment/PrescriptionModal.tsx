@@ -10,7 +10,6 @@ import React from "react";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
-
 interface PropsType {
   selectdata: Appoinmentdata;
   close: () => void;
@@ -48,7 +47,7 @@ export const PrescriptionModal: FC<PropsType> = ({
   const [whenToTake, setWhenToTake] = useState("");
   const [notes, setNotes] = useState("");
   const [prescribedList, setPrescribedList] = useState<any[]>([]);
-   const [selectedTime, setSelectedTime] = React.useState<string>("");
+  const [selectedTime, setSelectedTime] = React.useState<string>("");
 
   useEffect(() => {
     if (selectdata) {
@@ -59,22 +58,38 @@ export const PrescriptionModal: FC<PropsType> = ({
   }, [selectdata]);
 
   const generatePDF = () => {
-    const doc = new jsPDF();
+    const doc = new jsPDF("p", "mm", "a4");
 
-    // Header
-    doc.setFontSize(18);
-    doc.text("Medical Prescription", 14, 15);
+    // ========== HEADER ==========
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(20);
+    doc.text("Zaynax", 14, 15);
 
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(11);
+    doc.text("House 7, Road 6, Baridhara, Dhaka", 14, 22);
+    doc.text("Hotline: 09600000000 | Email: info@medlife.com", 14, 28);
+
+    // Divider
+    doc.setLineWidth(0.5);
+    doc.line(14, 32, 196, 32);
+
+    // ========== PATIENT INFO ==========
     doc.setFontSize(12);
-    doc.text(`Patient ID: ${id}`, 14, 30);
-    doc.text(`Name: ${name}`, 14, 38);
-    doc.text(`Department: ${department}`, 14, 46);
+    doc.setFont("helvetica", "bold");
+    doc.text("Patient Information", 14, 40);
 
-    let y = 60;
+    doc.setFont("helvetica", "normal");
+    doc.text(`ID: ${id}`, 14, 48);
+    doc.text(`Name: ${name}`, 14, 54);
+    doc.text(`Department: ${department}`, 14, 60);
+    doc.text(`Date: ${new Date().toLocaleDateString()}`, 150, 48);
 
-    // Complaints
+    let y = 70;
+
+    // ========== COMPLAINTS ==========
     if (complaintsList.length > 0) {
-      doc.setFontSize(14);
+      doc.setFont("helvetica", "bold");
       doc.text("Complaints", 14, y);
       y += 4;
 
@@ -82,50 +97,56 @@ export const PrescriptionModal: FC<PropsType> = ({
         startY: y,
         head: [["Complaint", "Duration"]],
         body: complaintsList.map((c) => [c.complaint, c.time]),
+        styles: { fontSize: 11 },
+        headStyles: { fillColor: [0, 102, 204] },
       });
 
       y = (doc as any).lastAutoTable.finalY + 10;
     }
 
-    // History
+    // ========== HISTORY ==========
     if (historyList.length > 0) {
-      doc.setFontSize(14);
-      doc.text("Detailed History", 14, y);
+      doc.setFont("helvetica", "bold");
+      doc.text("Patient History", 14, y);
       y += 4;
 
       autoTable(doc, {
         startY: y,
         head: [["History"]],
         body: historyList.map((h) => [h.history]),
+        styles: { fontSize: 11 },
+        headStyles: { fillColor: [0, 102, 204] },
       });
 
       y = (doc as any).lastAutoTable.finalY + 10;
     }
 
-    // Drug History
+    // ========== DRUG HISTORY ==========
     if (drugList.length > 0) {
-      doc.setFontSize(14);
+      doc.setFont("helvetica", "bold");
       doc.text("Drug History", 14, y);
       y += 4;
 
       autoTable(doc, {
         startY: y,
-        head: [["Drug Name"]],
+        head: [["Previous Drugs"]],
         body: drugList.map((d) => [d]),
+        styles: { fontSize: 11 },
+        headStyles: { fillColor: [0, 102, 204] },
       });
 
       y = (doc as any).lastAutoTable.finalY + 10;
     }
 
-    // Prescription
+    // ========== PRESCRIPTION ==========
     if (prescribedList.length > 0) {
-      doc.setFontSize(14);
+      doc.setFont("helvetica", "bold");
       doc.text("Prescribed Medicines", 14, y);
       y += 4;
 
       autoTable(doc, {
         startY: y,
-        head: [["Medicine", "Dose", "Duration", "When to take", "Notes"]],
+        head: [["Medicine", "Dose", "Duration", "When to Take", "Notes"]],
         body: prescribedList.map((p) => [
           p.medicine,
           p.dose,
@@ -133,12 +154,21 @@ export const PrescriptionModal: FC<PropsType> = ({
           p.whenToTake,
           p.notes || "",
         ]),
+        styles: { fontSize: 11 },
+        headStyles: { fillColor: [0, 102, 204] },
       });
+
+      y = (doc as any).lastAutoTable.finalY + 15;
     }
 
+    // ========== SIGNATURE ==========
+    doc.setFont("helvetica", "normal");
+    doc.text("------------------------------------------------------", 130, y);
+    doc.text("Doctor's Signature", 150, y + 6);
+
+    // Save
     doc.save(`Prescription_${id}.pdf`);
   };
-
 
   const addComplaint = () => {
     if (!complaint) return;
