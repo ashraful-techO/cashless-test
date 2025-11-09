@@ -7,6 +7,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@material-tailwind/react";
 import { Appoinmentdata } from "@/libs/api/interface/assuarace";
 import React from "react";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+
 
 interface PropsType {
   selectdata: Appoinmentdata;
@@ -54,6 +57,88 @@ export const PrescriptionModal: FC<PropsType> = ({
       setDepartment(selectdata.Department || "");
     }
   }, [selectdata]);
+
+  const generatePDF = () => {
+    const doc = new jsPDF();
+
+    // Header
+    doc.setFontSize(18);
+    doc.text("Medical Prescription", 14, 15);
+
+    doc.setFontSize(12);
+    doc.text(`Patient ID: ${id}`, 14, 30);
+    doc.text(`Name: ${name}`, 14, 38);
+    doc.text(`Department: ${department}`, 14, 46);
+
+    let y = 60;
+
+    // Complaints
+    if (complaintsList.length > 0) {
+      doc.setFontSize(14);
+      doc.text("Complaints", 14, y);
+      y += 4;
+
+      autoTable(doc, {
+        startY: y,
+        head: [["Complaint", "Duration"]],
+        body: complaintsList.map((c) => [c.complaint, c.time]),
+      });
+
+      y = (doc as any).lastAutoTable.finalY + 10;
+    }
+
+    // History
+    if (historyList.length > 0) {
+      doc.setFontSize(14);
+      doc.text("Detailed History", 14, y);
+      y += 4;
+
+      autoTable(doc, {
+        startY: y,
+        head: [["History"]],
+        body: historyList.map((h) => [h.history]),
+      });
+
+      y = (doc as any).lastAutoTable.finalY + 10;
+    }
+
+    // Drug History
+    if (drugList.length > 0) {
+      doc.setFontSize(14);
+      doc.text("Drug History", 14, y);
+      y += 4;
+
+      autoTable(doc, {
+        startY: y,
+        head: [["Drug Name"]],
+        body: drugList.map((d) => [d]),
+      });
+
+      y = (doc as any).lastAutoTable.finalY + 10;
+    }
+
+    // Prescription
+    if (prescribedList.length > 0) {
+      doc.setFontSize(14);
+      doc.text("Prescribed Medicines", 14, y);
+      y += 4;
+
+      autoTable(doc, {
+        startY: y,
+        head: [["Medicine", "Dose", "Duration", "When to take", "Notes"]],
+        body: prescribedList.map((p) => [
+          p.medicine,
+          p.dose,
+          p.duration,
+          p.whenToTake,
+          p.notes || "",
+        ]),
+      });
+    }
+
+    doc.save(`Prescription_${id}.pdf`);
+  };
+
 
   const addComplaint = () => {
     if (!complaint) return;
@@ -173,7 +258,9 @@ export const PrescriptionModal: FC<PropsType> = ({
             />
 
             <div className="mt-11 flex gap-4 no-overflow" onClick={addDrug}>
-              <Button className="bg-primary" type="submit">Add</Button>
+              <Button className="bg-primary" type="submit">
+                Add
+              </Button>
             </div>
           </div>
           <div className="mt-2 space-y-1">
@@ -226,7 +313,11 @@ export const PrescriptionModal: FC<PropsType> = ({
             ))}
           </div>
 
-          <div className="flex justify-end mt-6">
+          <div className="flex justify-between mt-6">
+            <Button className="bg-green-600" onClick={generatePDF}>
+              Generate PDF
+            </Button>
+
             <Button className="bg-primary" onClick={close}>
               Close
             </Button>
