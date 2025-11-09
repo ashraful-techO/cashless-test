@@ -201,6 +201,15 @@ export const PrescriptionModal: FC<PropsType> = ({
     setWhenToTake("");
     setNotes("");
   };
+  // Remove button component
+  const RemoveBtn = ({ onClick }: { onClick: () => void }) => (
+    <button
+      onClick={onClick}
+      className="ml-2 w-6 h-6 flex items-center justify-center rounded-full bg-red-500 text-white text-lg leading-none"
+    >
+      –
+    </button>
+  );
 
   return (
     <ReusableModal onOpen={!!selectdata} onClose={close}>
@@ -249,8 +258,21 @@ export const PrescriptionModal: FC<PropsType> = ({
           </div>
           <div className="mt-2 space-y-1">
             {complaintsList.map((c, i) => (
-              <div key={i} className="border p-2 rounded">
-                {c.complaint} - {c.time}
+              <div
+                key={i}
+                className="border p-2 rounded flex items-center justify-between"
+              >
+                <span>
+                  {c.complaint} - {c.time}
+                </span>
+
+                <RemoveBtn
+                  onClick={() =>
+                    setComplaintsList(
+                      complaintsList.filter((_, idx) => idx !== i)
+                    )
+                  }
+                />
               </div>
             ))}
           </div>
@@ -272,8 +294,17 @@ export const PrescriptionModal: FC<PropsType> = ({
           </div>
           <div className="mt-2 space-y-1">
             {historyList.map((h, i) => (
-              <div key={i} className="border p-2 rounded">
-                {h.history}
+              <div
+                key={i}
+                className="border p-2 rounded flex items-center justify-between"
+              >
+                <span>{h.history}</span>
+
+                <RemoveBtn
+                  onClick={() =>
+                    setHistoryList(historyList.filter((_, idx) => idx !== i))
+                  }
+                />
               </div>
             ))}
           </div>
@@ -295,8 +326,17 @@ export const PrescriptionModal: FC<PropsType> = ({
           </div>
           <div className="mt-2 space-y-1">
             {drugList.map((d, i) => (
-              <div key={i} className="border p-2 rounded">
-                {d}
+              <div
+                key={i}
+                className="border p-2 rounded flex items-center justify-between"
+              >
+                <span>{d}</span>
+
+                <RemoveBtn
+                  onClick={() =>
+                    setDrugList(drugList.filter((_, idx) => idx !== i))
+                  }
+                />
               </div>
             ))}
           </div>
@@ -337,8 +377,21 @@ export const PrescriptionModal: FC<PropsType> = ({
 
           <div className="mt-2 space-y-1">
             {prescribedList.map((p, i) => (
-              <div key={i} className="border p-2 rounded">
-                {p.medicine} - {p.dose} - {p.duration} - {p.whenToTake}
+              <div
+                key={i}
+                className="border p-2 rounded flex items-center justify-between"
+              >
+                <span>
+                  {p.medicine} - {p.dose} - {p.duration} - {p.whenToTake}
+                </span>
+
+                <RemoveBtn
+                  onClick={() =>
+                    setPrescribedList(
+                      prescribedList.filter((_, idx) => idx !== i)
+                    )
+                  }
+                />
               </div>
             ))}
           </div>
