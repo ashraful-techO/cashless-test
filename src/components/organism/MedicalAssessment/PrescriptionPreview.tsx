@@ -1,4 +1,3 @@
-// PrescriptionPreview.tsx
 "use client";
 
 import React, { FC } from "react";
@@ -7,8 +6,8 @@ interface PrescriptionPreviewProps {
   id: string;
   name: string;
   department: string;
-  complaintsList: { complaint: string; time: string }[];
-  historyList: { history: string }[];
+  complaintsList: { complaint: string; time: string; selectTime: string }[];
+  historyList: string[];
   drugList: string[];
   prescribedList: {
     medicine: string;
@@ -50,7 +49,7 @@ export const PrescriptionPreview: FC<PrescriptionPreviewProps> = ({
           <ul className="list-disc list-inside">
             {complaintsList.map((c, i) => (
               <li key={i}>
-                {c.complaint} - {c.time}
+                {c.complaint} - {c.time} - {c.selectTime}
               </li>
             ))}
           </ul>
@@ -63,7 +62,7 @@ export const PrescriptionPreview: FC<PrescriptionPreviewProps> = ({
           <h4 className="font-semibold">History</h4>
           <ul className="list-disc list-inside">
             {historyList.map((h, i) => (
-              <li key={i}>{h.history}</li>
+              <li key={i}>{h}</li> // ✅ render as string
             ))}
           </ul>
         </div>

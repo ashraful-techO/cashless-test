@@ -57,7 +57,8 @@ export const PreviewPrescriptionModal: FC<PreviewProps> = ({
               <h3 className="font-semibold text-lg mb-2">Complaints</h3>
               {complaintsList.map((c, i) => (
                 <p key={i}>
-                  • {c.complaint} — <span className="text-sm">{c.time}</span>
+                  • {c.complaint} — <span className="text-sm">{c.time}</span>{" "}
+                  <span className="text-sm">{c.selectTime}</span>
                 </p>
               ))}
             </div>

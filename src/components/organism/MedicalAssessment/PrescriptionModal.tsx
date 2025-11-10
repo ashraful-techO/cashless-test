@@ -43,14 +43,15 @@ export const PrescriptionModal: FC<PropsType> = ({
 
   const [complaint, setComplaint] = useState("");
   const [time, setTime] = useState("");
-  const [selectedTime, setSelectedTime] = useState("");
+  const [selectTime, setSelectedTime] = useState("");
+  const [selectTime1, setSelectedTime1] = useState("");
   const [complaintsList, setComplaintsList] = useState<any[]>([]);
 
   const [history, setHistory] = useState("");
   const [historyList, setHistoryList] = useState<any[]>([]);
 
   const [drug, setDrug] = useState("");
-  const [drugList, setDrugList] = useState<any[]>([]);
+  const [drugList, setDrugList] = useState<string[]>([]);
 
   const [medicine, setMedicine] = useState("");
   const [dose, setDose] = useState("");
@@ -69,9 +70,10 @@ export const PrescriptionModal: FC<PropsType> = ({
     }
   }, [selectdata]);
 
+  // Add handlers
   const addComplaint = () => {
     if (!complaint) return;
-    setComplaintsList([...complaintsList, { complaint, time, selectedTime }]);
+    setComplaintsList([...complaintsList, { complaint, time, selectTime }]);
     setComplaint("");
     setTime("");
     setSelectedTime("");
@@ -84,20 +86,21 @@ export const PrescriptionModal: FC<PropsType> = ({
   };
 
   const addDrug = () => {
-    if (!drug) return;
-    setDrugList([...drugList, drug]);
+    if (!drug.trim()) return;
+    setDrugList([...drugList, drug.trim()]);
     setDrug("");
   };
 
   const addPrescription = () => {
-    if (!medicine) return;
+    if (!medicine.trim()) return;
     setPrescribedList([
       ...prescribedList,
-      { medicine, dose, duration, whenToTake, notes },
+      { medicine, dose, duration, selectTime1, whenToTake, notes },
     ]);
     setMedicine("");
     setDose("");
     setDuration("");
+    setSelectedTime1(""); // reset correct field
     setWhenToTake("");
     setNotes("");
   };
@@ -117,7 +120,7 @@ export const PrescriptionModal: FC<PropsType> = ({
         <div className="p-6 bg-white rounded-md w-[850px] max-h-[90vh] overflow-y-auto">
           <h2 className="text-xl font-semibold mb-4">Prescription Form</h2>
 
-          {/* Auto-filled fields */}
+          {/* Patient Info */}
           <div className="grid grid-cols-3 gap-4 mb-4">
             <FormInput disabled label="ID" value={id} />
             <FormInput disabled label="Name" value={name} />
@@ -141,12 +144,12 @@ export const PrescriptionModal: FC<PropsType> = ({
               label="সময়কাল"
               placeholder="সময়কাল নির্বাচন করুন"
               items={timeOptions}
-              value={selectedTime}
+              value={selectTime}
               onChange={setSelectedTime}
             />
-            <div className="mt-11 flex gap-4" onClick={addComplaint}>
-              <Button className="bg-primary">Add</Button>
-            </div>
+            <Button className="bg-primary mt-11" onClick={addComplaint}>
+              Add
+            </Button>
           </div>
           <div className="mt-2 space-y-1">
             {complaintsList.map((c, i) => (
@@ -155,7 +158,7 @@ export const PrescriptionModal: FC<PropsType> = ({
                 className="border p-2 rounded flex items-center justify-between"
               >
                 <span>
-                  {c.complaint} - {c.time} - {c.selectedTime}
+                  {c.complaint} - {c.time} - {c.selectTime}
                 </span>
                 <RemoveBtn
                   onClick={() =>
@@ -205,9 +208,9 @@ export const PrescriptionModal: FC<PropsType> = ({
               value={drug}
               onChange={(e) => setDrug(e.target.value)}
             />
-            <div className="mt-11 flex gap-4" onClick={addDrug}>
-              <Button className="bg-primary">Add</Button>
-            </div>
+            <Button className="bg-primary mt-11" onClick={addDrug}>
+              Add
+            </Button>
           </div>
           <div className="mt-2 space-y-1">
             {drugList.map((d, i) => (
@@ -250,8 +253,8 @@ export const PrescriptionModal: FC<PropsType> = ({
                 label="সময়কাল"
                 placeholder="সময়কাল নির্বাচন করুন"
                 items={timeOptions}
-                value={selectedTime}
-                onChange={setSelectedTime}
+                value={selectTime1}
+                onChange={setSelectedTime1}
               />
               <FormInputSelect
                 label="When to take"
@@ -278,7 +281,8 @@ export const PrescriptionModal: FC<PropsType> = ({
                 className="border p-2 rounded flex items-center justify-between"
               >
                 <span>
-                  {p.medicine} - {p.dose} - {p.duration} - {p.whenToTake}
+                  {p.medicine} - {p.dose} - {p.duration} {p.selectTime1} -{" "}
+                  {p.whenToTake} - Notes:- {p.notes}
                 </span>
                 <RemoveBtn
                   onClick={() =>
@@ -291,6 +295,7 @@ export const PrescriptionModal: FC<PropsType> = ({
             ))}
           </div>
 
+          {/* Footer Buttons */}
           <div className="flex justify-between mt-6">
             <Button
               className="bg-green-600"
@@ -306,7 +311,7 @@ export const PrescriptionModal: FC<PropsType> = ({
                   name,
                   department,
                   complaintsList,
-                  historyList: historyList.map((h) => h.history || h),
+                  historyList,
                   drugList,
                   prescribedList,
                 })
@@ -327,7 +332,7 @@ export const PrescriptionModal: FC<PropsType> = ({
             name={name}
             department={department}
             complaintsList={complaintsList}
-            historyList={historyList.map((h) => h.history || h)}
+            historyList={historyList}
             drugList={drugList}
             prescribedList={prescribedList}
           />

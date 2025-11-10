@@ -6,18 +6,20 @@ interface PrescriptionData {
   name: string;
   department: string;
   complaintsList: {
-    selectedTime: string; complaint: string; time: string 
-}[];
-  historyList: { history: string }[];
+    complaint: string;
+    time: string;
+    selectTime: string;
+  }[];
+  historyList: string[] | { history: string }[]; // ✅ supports both formats
   drugList: string[];
   prescribedList: {
     medicine: string;
     dose: string;
     duration: string;
+    selectTime1: string; // ✅ correct field
     whenToTake: string;
     notes: string;
   }[];
-  selectedTime?: string;
 }
 
 export const generatePrescriptionPDF = ({
@@ -28,7 +30,6 @@ export const generatePrescriptionPDF = ({
   historyList,
   drugList,
   prescribedList,
-  selectedTime = "",
 }: PrescriptionData) => {
   const doc = new jsPDF("p", "mm", "a4");
 
@@ -47,6 +48,12 @@ export const generatePrescriptionPDF = ({
   doc.line(14, 32, 196, 32);
 
   // ========== PATIENT INFO ==========
+
+  const today = new Date();
+  const formattedDate = `${String(today.getDate()).padStart(2, "0")}/${String(
+    today.getMonth() + 1
+  ).padStart(2, "0")}/${today.getFullYear()}`;
+
   doc.setFontSize(12);
   doc.setFont("helvetica", "bold");
   doc.text("Patient Information", 14, 40);
@@ -55,7 +62,8 @@ export const generatePrescriptionPDF = ({
   doc.text(`ID: ${id}`, 14, 48);
   doc.text(`Name: ${name}`, 14, 54);
   doc.text(`Department: ${department}`, 14, 60);
-  doc.text(`Date: ${new Date().toLocaleDateString()}`, 150, 48);
+
+  doc.text(`Date: ${formattedDate}`, 150, 48);
 
   let y = 70;
 
@@ -70,7 +78,7 @@ export const generatePrescriptionPDF = ({
       head: [["Complaint", "Duration"]],
       body: complaintsList.map((c) => [
         c.complaint,
-        `${c.time} ${c.selectedTime || ""}`, // use selectedTime from each complaint
+        `${c.time} ${c.selectTime}`,
       ]),
       styles: { fontSize: 11 },
       headStyles: { fillColor: [255, 0, 101] },
@@ -88,7 +96,9 @@ export const generatePrescriptionPDF = ({
     autoTable(doc, {
       startY: y,
       head: [["History"]],
-      body: historyList.map((h) => [h.history]),
+      body: historyList.map((h: any) => [
+        typeof h === "string" ? h : h.history, // ✅ support both types
+      ]),
       styles: { fontSize: 11 },
       headStyles: { fillColor: [255, 0, 101] },
     });
@@ -125,7 +135,7 @@ export const generatePrescriptionPDF = ({
       body: prescribedList.map((p) => [
         p.medicine,
         p.dose,
-        p.duration,
+        `${p.duration} ${p.selectTime1}`, // ✅ duration time
         p.whenToTake,
         p.notes || "",
       ]),
