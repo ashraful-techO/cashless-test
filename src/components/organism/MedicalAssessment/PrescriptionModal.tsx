@@ -157,9 +157,11 @@ export const PrescriptionModal: FC<PropsType> = ({
               value={selectTime}
               onChange={setSelectedTime}
             />
-            <Button className="bg-primary mt-11" onClick={addComplaint}>
-              Add
-            </Button>
+            <div>
+              <Button className="bg-primary mt-11" onClick={addComplaint}>
+                Add
+              </Button>
+            </div>
           </div>
           <div className="mt-2 space-y-1">
             {complaintsList.map((c, i) => (
@@ -218,9 +220,12 @@ export const PrescriptionModal: FC<PropsType> = ({
               value={drug}
               onChange={(e) => setDrug(e.target.value)}
             />
-            <Button className="bg-primary mt-11" onClick={addDrug}>
-              Add
-            </Button>
+            <div>
+              {" "}
+              <Button className="bg-primary mt-11" onClick={addDrug}>
+                Add
+              </Button>
+            </div>
           </div>
           <div className="mt-2 space-y-1">
             {drugList.map((d, i) => (
