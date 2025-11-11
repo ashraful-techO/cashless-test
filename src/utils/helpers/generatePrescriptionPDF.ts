@@ -149,7 +149,16 @@ export const generatePrescriptionPDF = ({
 
   // ========== SIGNATURE ==========
   doc.setFont("helvetica", "normal");
+
+  // Draw signature line
   doc.text("------------------------------------------------------", 130, y);
+
+  // Add "Signed" above the line
+  doc.setFontSize(10);
+  doc.text("Signed", 160, y - 4); // adjust y-4 to place above the line
+
+  // Add "Doctor's Signature" below the line
+  doc.setFontSize(12);
   doc.text("Doctor's Signature", 150, y + 6);
 
   // Save PDF
