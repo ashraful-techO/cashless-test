@@ -5,12 +5,11 @@ import {
 } from "@/libs/api/interface/assuarace";
 import { FC } from "react";
 import { MedicalAssessmentTableRow } from "./MedicalAssessmentTableRow";
-import { PrescriptionModal } from "./PrescriptionModal";
 
 interface PropsType {
   data: IAllAppoinmentdata | null;
   loading: boolean;
-  selectdata: Appoinmentdata | null; // optional
+  selectdata: Appoinmentdata | null;
   setSelectData: (data: Appoinmentdata | null) => void;
   updateData: () => Promise<void>;
 }
@@ -21,7 +20,8 @@ const ClientTableHeader: string[] = [
   "Mobile",
   "Email",
   "Department",
-  "Prescription",
+  "Previous Prescription",
+  "Prescription", // keep header if you want column, otherwise remove
 ];
 
 export const MedicalAssessmentLists: FC<PropsType> = ({
@@ -40,22 +40,13 @@ export const MedicalAssessmentLists: FC<PropsType> = ({
           data={data?.items}
         >
           {data?.items?.map((el, i) => (
-            <tr key={i} className="hover:bg-gray-100">
-              {/* Render the row data normally */}
-              <MedicalAssessmentTableRow data={el} updateData={updateData} />
-
-              {/* Prescription Column */}
-              <td className="px-4 py-2">
-                <button
-                  className="bg-primary text-white px-3 py-1 rounded"
-                  onClick={(e) => {
-                    e.stopPropagation(); // prevent any parent row click
-                    setSelectData(el); // set the row data for Prescription modal
-                  }}
-                >
-                  Prescription
-                </button>
-              </td>
+            <tr key={i} className="hover:bg-gray-100 cursor-pointer">
+              {/* Render the row data including Prescription button */}
+              <MedicalAssessmentTableRow
+                data={el}
+                updateData={updateData}
+                onPrescriptionClick={(rowData) => setSelectData(rowData)}
+              />
             </tr>
           ))}
         </ReusableTable>

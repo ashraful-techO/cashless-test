@@ -1,34 +1,28 @@
 import { ChipByStatus } from "@/components/molecules";
 import { Appoinmentdata } from "@/libs/api/interface/assuarace";
-
-import {
-  formatAddUnderscores,
-  formatStatus,
-} from "@/utils/helpers/format.helpers";
 import { Button } from "@material-tailwind/react";
-import dateformat from "dateformat";
-import Link from "next/link";
 import { FC } from "react";
-import { MenuItems } from "./MenuItems";
 
 interface PropsType {
   data: Appoinmentdata;
   updateData: () => Promise<void>;
+  onPrescriptionClick: (data: Appoinmentdata) => void; // NEW
 }
 
 export const MedicalAssessmentTableRow: FC<PropsType> = ({
   data,
   updateData,
+  onPrescriptionClick, // NEW
 }) => {
   const bgColor =
     !data?.medicalStatus && !data?.testStatus
-      ? "" // just submitted
+      ? ""
       : data?.medicalStatus === "COMPLETED" &&
         (data?.testStatus === "COMPLETED" || data?.testStatus === "NA")
-        ? "bg-green-50"
-        : data?.medicalStatus === "COMPLETED" && data?.testStatus === "PENDING"
-          ? "bg-yellow-50"
-          : "";
+      ? "bg-green-50"
+      : data?.medicalStatus === "COMPLETED" && data?.testStatus === "PENDING"
+      ? "bg-yellow-50"
+      : "";
 
   return (
     <>
@@ -49,10 +43,28 @@ export const MedicalAssessmentTableRow: FC<PropsType> = ({
       <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs">{data?.Email}</p>
       </td>
+
+      <td className={`p-4 border-b border-blue-gray-50 `}>
+        <p className="text-xs">{data?.Department}</p>
+      </td>
+
       <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs">{data?.Email}</p>
       </td>
 
+
+      {/* Prescription Button */}
+      <td className={`p-4 border-b border-blue-gray-50`}>
+        <Button
+          className="bg-primary text-white px-3 py-1 rounded"
+          onClick={(e) => {
+            e.stopPropagation(); // prevent row click
+            onPrescriptionClick(data); // pass row data
+          }}
+        >
+          Prescription
+        </Button>
+      </td>
     </>
   );
 };

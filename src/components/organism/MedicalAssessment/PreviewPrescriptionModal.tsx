@@ -111,8 +111,8 @@ export const PreviewPrescriptionModal: FC<PreviewProps> = ({
                 return (
                   <div key={i} className="mb-3">
                     <p className="text-sm">
-                      <strong>{p.medicine}</strong> — {finalDose} / {p.duration}{" "}
-                      {p.selectTime1} / {p.whenToTake}
+                      <strong>{p.medicine}</strong> — {finalDose} — {p.duration}{" "}
+                      {p.selectTime1} — {p.whenToTake}
                     </p>
 
                     {p.notes && (
