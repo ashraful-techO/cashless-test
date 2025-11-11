@@ -96,7 +96,7 @@ export const PreviewPrescriptionModal: FC<PreviewProps> = ({
                     <strong>{p.medicine}</strong>
                   </p>
                   <p className="text-sm">
-                    Dose: {p.dose} | Duration: {p.duration} | When:{" "}
+                    Dose: {p.dose} | Duration: {p.duration} {p.selectTime1} | When:{" "}
                     {p.whenToTake}
                   </p>
                   {p.notes && (

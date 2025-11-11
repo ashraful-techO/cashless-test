@@ -298,7 +298,7 @@ export const PrescriptionModal: FC<PropsType> = ({
           {/* Footer Buttons */}
           <div className="flex justify-between mt-6">
             <Button
-              className="bg-green-600"
+              className="bg-blue-600"
               onClick={() => setPreviewOpen(true)}
             >
               Preview
