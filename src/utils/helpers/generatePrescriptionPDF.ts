@@ -13,6 +13,7 @@ interface PrescriptionData {
   historyList: string[] | { history: string }[]; // ✅ supports both formats
   drugList: string[];
   prescribedList: {
+    customDose: string;
     medicine: string;
     dose: string;
     duration: string;
@@ -134,7 +135,7 @@ export const generatePrescriptionPDF = ({
       head: [["Medicine", "Dose", "Duration", "When to Take", "Notes"]],
       body: prescribedList.map((p) => [
         p.medicine,
-        p.dose,
+        p.dose || p.customDose, // ✅ include customDose
         `${p.duration} ${p.selectTime1}`, // ✅ duration time
         p.whenToTake,
         p.notes || "",

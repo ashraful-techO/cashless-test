@@ -84,26 +84,43 @@ export const PreviewPrescriptionModal: FC<PreviewProps> = ({
             </div>
           )}
 
-          {/* Prescription */}
           {prescribedList.length > 0 && (
             <div className="border p-4 rounded mb-4">
               <h3 className="font-semibold text-lg mb-2">
                 Prescribed Medicines
               </h3>
-              {prescribedList.map((p, i) => (
-                <div key={i} className="mb-2">
-                  <p>
-                    <strong>{p.medicine}</strong>
-                  </p>
-                  <p className="text-sm">
-                    Dose: {p.dose} | Duration: {p.duration} {p.selectTime1} | When:{" "}
-                    {p.whenToTake}
-                  </p>
-                  {p.notes && (
-                    <p className="text-sm italic">Notes: {p.notes}</p>
-                  )}
-                </div>
-              ))}
+
+              {prescribedList.map((p, i) => {
+                // Normalize customDose to a string
+                let finalDose: string;
+                if (!p.customDose) {
+                  finalDose = p.dose; // fallback to default dose
+                } else if (typeof p.customDose === "string") {
+                  finalDose = p.customDose;
+                } else if (typeof p.customDose === "object") {
+                  // For objects coming from select component
+                  finalDose = (
+                    p.customDose.label ||
+                    p.customDose.value ||
+                    ""
+                  ).toString();
+                } else {
+                  finalDose = p.dose;
+                }
+
+                return (
+                  <div key={i} className="mb-3">
+                    <p className="text-sm">
+                      <strong>{p.medicine}</strong> — {finalDose} / {p.duration}{" "}
+                      {p.selectTime1} / {p.whenToTake}
+                    </p>
+
+                    {p.notes && (
+                      <p className="text-sm italic mt-1">Notes: {p.notes}</p>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           )}
 

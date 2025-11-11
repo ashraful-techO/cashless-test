@@ -30,6 +30,7 @@ const doseOptions: IItems[] = [
   { label: "1+1+1", value: "1+1+1" },
   { label: "1+0+1", value: "1+0+1" },
   { label: "0+1+0", value: "0+1+0" },
+  { label: "Custom", value: "custom" },
 ];
 
 export const PrescriptionModal: FC<PropsType> = ({
@@ -55,6 +56,7 @@ export const PrescriptionModal: FC<PropsType> = ({
 
   const [medicine, setMedicine] = useState("");
   const [dose, setDose] = useState("");
+  const [customDose, setCustomDose] = useState("");
   const [duration, setDuration] = useState("");
   const [whenToTake, setWhenToTake] = useState("");
   const [notes, setNotes] = useState("");
@@ -95,8 +97,16 @@ export const PrescriptionModal: FC<PropsType> = ({
     if (!medicine.trim()) return;
     setPrescribedList([
       ...prescribedList,
-      { medicine, dose, duration, selectTime1, whenToTake, notes },
+      {
+        medicine,
+        dose: dose === "custom" ? customDose : dose, // save typed value if custom
+        duration,
+        selectTime1,
+        whenToTake,
+        notes,
+      },
     ]);
+    setCustomDose("");
     setMedicine("");
     setDose("");
     setDuration("");
@@ -230,7 +240,7 @@ export const PrescriptionModal: FC<PropsType> = ({
 
           {/* Prescription */}
           <h3 className="font-semibold mt-4">Prescribed Medicine</h3>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <FormInput
               label="Medicine"
               value={medicine}
@@ -241,29 +251,39 @@ export const PrescriptionModal: FC<PropsType> = ({
               placeholder="Select Dose"
               items={doseOptions}
               value={dose}
-              onChange={setDose}
+              onChange={(value) => setDose(value)}
             />
-            <div className="flex flex-col-3 gap-10">
+
+            {dose === "custom" && (
               <FormInput
-                label="Duration"
-                value={duration}
-                onChange={(e) => setDuration(e.target.value)}
+                label="Custom Dose"
+                placeholder="e.g. 0+0+0"
+                value={customDose}
+                onChange={(e) => setCustomDose(e.target.value)}
               />
-              <FormInputSelect
-                label="সময়কাল"
-                placeholder="সময়কাল নির্বাচন করুন"
-                items={timeOptions}
-                value={selectTime1}
-                onChange={setSelectedTime1}
-              />
-              <FormInputSelect
-                label="When to take"
-                placeholder="সময় নির্বাচন করুন"
-                items={takeTime}
-                value={whenToTake}
-                onChange={setWhenToTake}
-              />
-            </div>
+            )}
+          </div>
+
+          <div className="grid grid-cols-3 gap-4 mt-4">
+            <FormInput
+              label="Duration"
+              value={duration}
+              onChange={(e) => setDuration(e.target.value)}
+            />
+            <FormInputSelect
+              label="সময়কাল"
+              placeholder="সময়কাল নির্বাচন করুন"
+              items={timeOptions}
+              value={selectTime1}
+              onChange={setSelectedTime1}
+            />
+            <FormInputSelect
+              label="When to take"
+              placeholder="সময় নির্বাচন করুন"
+              items={takeTime}
+              value={whenToTake}
+              onChange={setWhenToTake}
+            />
           </div>
           <Textarea
             className="mt-3"
