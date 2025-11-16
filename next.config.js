@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   env: {
-    METLIFE_UNDERWRITING_SERVICE: process.env.METLIFE_UNDERWRITING_SERVICE,
+    METLIFE_CASHLESS_SERVICE: process.env.METLIFE_CASHLESS_SERVICE,
 
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,

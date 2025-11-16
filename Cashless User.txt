@@ -1,0 +1,23 @@
+Cashless User:
+    	"name": "CallCenter",
+        "phone": "01744829193",
+        "userType": "CallCenter",
+
+   	"name": "Metlife User",
+        "phone": "01744829194",
+        "userType": "Metlife",
+
+       "name": "Doctor User 1",
+        "phone": "01744829195",
+        "userType": "Doctor",
+
+        "name": "Doctor User 2",
+        "phone": "01744829196",
+        "userType": "Doctor",
+
+
+        "name": "Business User",
+        "phone": "01744829197",
+        "userType": "Business",
+
+EMP-001

@@ -10,8 +10,6 @@ interface PrescriptionData {
     time: string;
     selectTime: string;
   }[];
-  historyList: string[] | { history: string }[]; // ✅ supports both formats
-  drugList: string[];
   prescribedList: {
     customDose: string;
     medicine: string;
@@ -28,8 +26,6 @@ export const generatePrescriptionPDF = ({
   name,
   department,
   complaintsList,
-  historyList,
-  drugList,
   prescribedList,
 }: PrescriptionData) => {
   const doc = new jsPDF("p", "mm", "a4");
@@ -88,41 +84,7 @@ export const generatePrescriptionPDF = ({
     y = (doc as any).lastAutoTable.finalY + 10;
   }
 
-  // ========== HISTORY ==========
-  if (historyList.length > 0) {
-    doc.setFont("helvetica", "bold");
-    doc.text("Patient History", 14, y);
-    y += 4;
 
-    autoTable(doc, {
-      startY: y,
-      head: [["History"]],
-      body: historyList.map((h: any) => [
-        typeof h === "string" ? h : h.history, // ✅ support both types
-      ]),
-      styles: { fontSize: 11 },
-      headStyles: { fillColor: [255, 0, 101] },
-    });
-
-    y = (doc as any).lastAutoTable.finalY + 10;
-  }
-
-  // ========== DRUG HISTORY ==========
-  if (drugList.length > 0) {
-    doc.setFont("helvetica", "bold");
-    doc.text("Drug History", 14, y);
-    y += 4;
-
-    autoTable(doc, {
-      startY: y,
-      head: [["Previous Drugs"]],
-      body: drugList.map((d) => [d]),
-      styles: { fontSize: 11 },
-      headStyles: { fillColor: [255, 0, 101] },
-    });
-
-    y = (doc as any).lastAutoTable.finalY + 10;
-  }
 
   // ========== PRESCRIPTION ==========
   if (prescribedList.length > 0) {

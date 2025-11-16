@@ -15,7 +15,7 @@ import ResetButton from "@/components/molecules/ResetButton";
 import ExportButton from "@/components/molecules/ExportButton";
 import { BusinessTeamFilter } from "../BusinessTeam/BusinessTeamFilter";
 import { AppoinmentFilter } from "../Appoinmets/AppoinmentFilter";
-import { MedicalAssessmentFilter } from "../MedicalAssessment";
+// import { MedicalAssessmentFilter } from "../MedicalAssessment";
 
 export const Header = () => {
   const [filteredSidebarItems, setFilteredSidebarItems] = useState<
@@ -85,11 +85,12 @@ export const Header = () => {
       <div className="flex items-center gap-2">
         {isBusinessUser && <BusinessTeamFilter />}
         {isCallCenterUser && <AppoinmentFilter />}
-        {isMedicalUser && <MedicalAssessmentFilter />}
+        {/* {isMedicalUser && <MedicalAssessmentFilter />} */}
         <MetlifeFilter />
         <div className="flex justify-center gap-2">
-          <ExportButton />
+          {/* <ExportButton /> */}
           {isMetlifeUser && <MetlifeAddUser />}
+          
         </div>
       </div>
 

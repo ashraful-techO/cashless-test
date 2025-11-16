@@ -13,8 +13,6 @@ interface PreviewProps {
   department: string;
 
   complaintsList: any[];
-  historyList: any[];
-  drugList: any[];
   prescribedList: any[];
 }
 
@@ -25,8 +23,6 @@ export const PreviewPrescriptionModal: FC<PreviewProps> = ({
   name,
   department,
   complaintsList,
-  historyList,
-  drugList,
   prescribedList,
 }) => {
   return (
@@ -64,25 +60,8 @@ export const PreviewPrescriptionModal: FC<PreviewProps> = ({
             </div>
           )}
 
-          {/* History */}
-          {historyList.length > 0 && (
-            <div className="border p-4 rounded mb-4">
-              <h3 className="font-semibold text-lg mb-2">History</h3>
-              {historyList.map((h, i) => (
-                <p key={i}>• {h.history}</p>
-              ))}
-            </div>
-          )}
 
-          {/* Drug History */}
-          {drugList.length > 0 && (
-            <div className="border p-4 rounded mb-4">
-              <h3 className="font-semibold text-lg mb-2">Drug History</h3>
-              {drugList.map((d, i) => (
-                <p key={i}>• {d}</p>
-              ))}
-            </div>
-          )}
+
 
           {prescribedList.length > 0 && (
             <div className="border p-4 rounded mb-4">

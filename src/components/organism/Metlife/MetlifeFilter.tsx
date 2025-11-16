@@ -23,31 +23,31 @@ export const MetlifeFilter = () => {
     <div className="grid grid-cols-12 items-end gap-4 py-4">
       {/* Reset Button + Search Input side-by-side */}
       <div className="col-span-12 md:col-span-5 flex flex-row gap-3 items-end">
-        <ResetButton setStartDate={setStartDate} setEndDate={setEndDate} />
-        <SearchInput
+        {/* <ResetButton setStartDate={setStartDate} setEndDate={setEndDate} /> */}
+        {/* <SearchInput
           searchKey="search"
           placeholder="Search by patient name, mobile number..."
-        />
+        /> */}
       </div>
 
       {/* Date Picker + Status Select */}
       <div className="col-span-12 md:col-span-7 flex flex-col md:flex-row md:items-end gap-3">
         {/* Date Picker */}
         <div className="flex-1">
-          <CustomDatePickerWithDays
+          {/* <CustomDatePickerWithDays
             startDate={startDate}
             endDate={endDate}
             setStartDate={setStartDate}
             setEndDate={setEndDate}
             placeholder="Select date range"
-          />
+          /> */}
         </div>
 
         {/* Status Select */}
         <div className="flex gap-2">
-          {userType == "Doctor" && (
+          {/* {userType == "Doctor" && (
             <StatusSelect />
-          )}
+          )} */}
         </div>
       </div>
     </div>

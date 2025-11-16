@@ -8,9 +8,9 @@ const ExportButton: React.FC = () => {
   // Export Data
   const exportData = async () => {
     try {
-      // const response = await fetch("/api/underwritings/export"); //export API
+      // const response = await fetch("/api/appointments/export"); //export API
 
-      const response = await fetch("/api/underwritings/export");
+      const response = await fetch("/api/appointments/export");
       if (!response.ok) throw new Error("Export failed");
 
       const blob = await response.blob();

@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  MedicalAssessmentFilter,
   MedicalAssessmentLists,
   MedicalAssessmentModal,
 } from "@/components/organism/MedicalAssessment";
@@ -66,24 +65,9 @@ export const MedicalAssessmentUnit = () => {
         updateData={getTableData}
       />
 
-      {/* {selectdata && (
-        <MedicalAssessmentModal
-          selectdata={selectdata}
-          close={() => setSelectData(null)}
-          updateData={getTableData}
-        />
-      )} */}
+      
 
-      {/* Prescription Modal OUTSIDE table */}
-      {selectdata && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <PrescriptionModal
-            selectdata={selectdata}
-            close={() => setSelectData(null)}
-            updateData={getTableData}
-          />
-        </div>
-      )}
+     {/* <h1>hello from medical assesment unit</h1> */}
     </div>
   );
 };

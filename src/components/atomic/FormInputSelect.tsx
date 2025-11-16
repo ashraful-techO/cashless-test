@@ -29,35 +29,46 @@ export const FormInputSelect: FC<ISelectPropsType> = ({
   ...rest
 }) => {
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col items-center">
+      {/* Label */}
       {label && (
-        <p className={`font-normal mb-1 mt-4 ${error ? "text-red-500" : ""}`}>
+        <p
+          className={`font-normal text-xs mb-1 mt-1 ${
+            error ? "text-red-500" : ""
+          }`}
+        >
           {label} <span className="text-red-500">{required && "*"}</span>
         </p>
       )}
 
-      {/* Wrapper to intercept clicks when disabled */}
-      <div className={`relative ${disabled ? "opacity-90" : ""}`}>
+      {/* Select Wrapper */}
+      <div
+        className={`relative w-34 max-w-xs ${disabled ? "opacity-90" : ""}`}
+      >
         <Select
           {...rest}
           value={value}
-          onChange={disabled ? undefined : onChange} // 🔒 prevent value change
+          onChange={disabled ? undefined : onChange} // prevent change if disabled
           labelProps={{
             className: "before:content-none after:content-none",
           }}
-          disabled={disabled} // Won’t fully disable natively, but still included
+          disabled={disabled}
           error={!!error}
           className={`${
             error
               ? "!border-red-500 focus:!border-red-500 focus:ring-red-500/10"
-              : "!border-gray-300 focus:!border-primary focus:ring-primary/10"
-          } !border !rounded-[4px] !h-[42px] text-gray-900 ring-4 ring-transparent 
+              : "!border-gray-100 focus:!border-primary focus:ring-primary/10"
+          } !border !rounded-[4px] !h-[30px] text-gray-900 ring-4 ring-transparent 
           placeholder:text-gray-500 w-full ${
             disabled ? "bg-gray-100 cursor-not-allowed" : ""
           }`}
         >
           {items.map((item, i) => (
-            <Option key={i} value={item.value}>
+            <Option
+              key={i}
+              value={item.value}
+              className="flex center text-center" // centers the option text
+            >
               {item.label}
             </Option>
           ))}
@@ -69,7 +80,10 @@ export const FormInputSelect: FC<ISelectPropsType> = ({
         )}
       </div>
 
-      {error && <p className="text-red-500 mt-1 text-sm">{error}</p>}
+      {/* Error message */}
+      {error && (
+        <p className="text-red-500 mt-1 text-sm text-center">{error}</p>
+      )}
     </div>
   );
 };

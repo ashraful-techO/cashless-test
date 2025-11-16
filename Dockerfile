@@ -10,12 +10,12 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Test
-# ENV METLIFE_UNDERWRITING_SERVICE=https://api.zaynax.health/metlife_underwriting_service
+# ENV METLIFE_CASHLESS_SERVICE=https://api.zaynax.health/metlife_underwriting_service
 # ENV NEXTAUTH_SECRET=fed0498f4326935d5ecac51173662ec5
 # ENV NEXTAUTH_URL=https://underwriting.zaynax.health
 
 #Live
-ENV METLIFE_UNDERWRITING_SERVICE=https://api.zaynaxhealth.com/metlife_underwriting_service
+ENV METLIFE_CASHLESS_SERVICE=https://api.zaynaxhealth.com/metlife_underwriting_service
 ENV NEXTAUTH_SECRET=fed0498f4326935d5ecac51173662ec5
 ENV NEXTAUTH_URL=https://underwriting.zaynaxhealth.com
 

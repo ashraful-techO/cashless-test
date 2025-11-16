@@ -1,58 +1,40 @@
 export interface IAllAppoinmentdata {
-  items: Appoinmentdata[];
+  name: string;
+  phone: string;
+  email: string;
+  department: string;
+  complaints: any;
+  medicines: any;
+  data: Appoinmentdata[];
   nextPage: any;
   total: number;
   totalPages: number;
   pageNumber: number;
+  success: boolean;
+  message: string | null;
+}
+
+export interface Medicine {
+  name: string;
+  dosage: string;
+  quantity: number;
+  instructions: string;
 }
 
 export interface Appoinmentdata {
-  isDownloaded: any;
-  _id(_id: any): unknown;
-  policyNumber: string;
-  policyOwnerName: string;
-  mobile: string;
-  NID?: string;
-  gender: string;
-  address: string;
-  applicantsType: string;
-  isRequiredMedical: boolean;
-  isRequiredTest: boolean;
-  requiredTest: string;
-  requiredOtherTest: string;
-  appointmentLink: string;
-  medicalStatus: string;
-  testStatus: string;
-  overallStatus: string;
-  paymentStatus: string;
-  medicalDocument: MedicalDocument[];
-  testDocument: string[];
-  userPolicyDocument?: UserPolicyDocument[];
+  id: string;
+  employeeId: string;
+  name: string;
+  phone: string;
+  email: string;
+  department: string;
+  doctorName: string;
+  complaints: string[];
+  medicines: Medicine[];
   createdAt: string;
   updatedAt: string;
-  id: string;
-  diagnosticInfo?: string;
-  medicalAppointmentDate?: string;
-  testAppointmentDate?: string;
-  submissionDate?: string;
-  comment?: string;
-  paymentDate?: string;
-  isSMSSent?: boolean;
-  // bankName: string;
-  agentCode: string;
-  agentName: string;
-  agentMobile: string;
-  unitManagerName: string;
-  unitManagerMobile: string;
-  branchManagerName: string;
-  branchManagerMobile: string;
-  medicalInfo: string;
-  ID: string;
-  Name: string;
-  Email: string;
-  Mobile: string;
-  Department: string;
 }
+
 
 export interface MedicalDocument {
   documentName: string;
@@ -99,7 +81,7 @@ interface AddPolicyDataDTO {
   requiredTest: string;
 }
 
-export interface IPolicyResponse {
+export interface IResponse {
   success: boolean;
   data: PolicyData;
   message: string | null;
