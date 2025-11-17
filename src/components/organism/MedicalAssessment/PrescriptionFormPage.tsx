@@ -2,13 +2,13 @@
 
 import { FC, useEffect, useState } from "react";
 import { FormInput, FormInputSelect, IItems } from "@/components/atomic";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@material-tailwind/react";
 import { generatePrescriptionPDF } from "@/utils/helpers/generatePrescriptionPDF";
 import { PreviewPrescriptionModal } from "./PreviewPrescriptionModal";
 import { Appoinmentdata } from "@/libs/api/interface/assuarace";
 import { assuranceAPI } from "@/libs/api";
-import axios from "axios";
+import { getUserState } from "@/store/actions";
+import { useSelector } from "react-redux";
 
 interface Medicine {
   name: string;
@@ -20,6 +20,9 @@ interface Medicine {
 interface PropsType {
   selectdata: Appoinmentdata;
   onIdChange?: (id: string) => void;
+  usertype?: {
+    username: string;
+  };
 }
 
 const timeOptions: IItems[] = [
@@ -74,18 +77,12 @@ export const PrescriptionFormPage: FC<PropsType> = ({
 
   const [previewOpen, setPreviewOpen] = useState(false);
 
+  const { userData } = useSelector(getUserState);
+
+  console.log("User Data in UserInfo:", userData?.name);
+
   // -------------------- Fetch Appointment by ID --------------------
   useEffect(() => {
-    if (!id) {
-      setName("");
-      setMobile("");
-      setEmail("");
-      setDepartment("");
-      setComplaintsList([]);
-      setPrescribedList([]);
-      return;
-    }
-
     setName("");
     setMobile("");
     setEmail("");
@@ -93,25 +90,40 @@ export const PrescriptionFormPage: FC<PropsType> = ({
     setComplaintsList([]);
     setPrescribedList([]);
 
+    if (!id) {
+      onIdChange?.(id);
+      return;
+    }
+
     const timer = setTimeout(async () => {
       try {
         const res = await assuranceAPI.getAppointmentById(id);
         const d = res.data;
-        if (!d) return;
+
+        if (!d) {
+          onIdChange?.(id);
+          return;
+        }
 
         setName(d.name || "");
         setMobile(d.phone || "");
         setEmail(d.email || "");
         setDepartment(d.department || "");
+
         setComplaintsList(
-          d.complaints?.map((c: string) => ({ complaint: c })) || []
+          d.complaints?.map((c: string) => ({
+            complaint: c,
+            time: "",
+            selectTime: "",
+          })) || []
         );
+
         setPrescribedList(
           d.medicines?.map((m: Medicine) => ({
             medicine: m.name,
             dose: m.dosage,
             quantity: m.quantity,
-            notes: m.instructions,
+            whenToTake: m.instructions,
           })) || []
         );
 
@@ -119,18 +131,19 @@ export const PrescriptionFormPage: FC<PropsType> = ({
       } catch (err) {
         console.error("Failed to fetch appointment", err);
         setName("");
+        setMobile("");
+        setEmail("");
         setDepartment("");
         setComplaintsList([]);
         setPrescribedList([]);
+        onIdChange?.(id);
       }
     }, 400);
 
     return () => clearTimeout(timer);
   }, [id, onIdChange]);
 
-  // -------------------------------------------
-  // ✅ Fetch suggested symptoms while typing
-  // -------------------------------------------
+  // -------------------- Fetch suggested complaints --------------------
   useEffect(() => {
     if (!complaint.trim()) return;
 
@@ -141,8 +154,7 @@ export const PrescriptionFormPage: FC<PropsType> = ({
         );
         const data = await res.json();
         setComplaintSuggestions(data?.data || []);
-      } catch (err) {
-        console.error("Complaint suggestion fetch failed", err);
+      } catch {
         setComplaintSuggestions([]);
       }
     }, 300);
@@ -150,9 +162,7 @@ export const PrescriptionFormPage: FC<PropsType> = ({
     return () => clearTimeout(timer);
   }, [complaint]);
 
-  // -------------------------------------------
-  // ✅ Fetch suggested medicines while typing
-  // -------------------------------------------
+  // -------------------- Fetch suggested medicines --------------------
   useEffect(() => {
     if (!medicine.trim()) {
       setMedicineSuggestions([]);
@@ -165,11 +175,10 @@ export const PrescriptionFormPage: FC<PropsType> = ({
           `https://api.zaynax.health/product_service/medicine/brand/prescription_recomended_new?query=${medicine}`
         );
         const data = await res.json();
-        const list =
-          data?.data?.map((item: any) => item?.brand_name || "") || [];
-        setMedicineSuggestions(list);
-      } catch (err) {
-        console.error("Medicine suggestion fetch failed", err);
+        setMedicineSuggestions(
+          data?.data?.map((item: any) => item.name || "") || []
+        );
+      } catch {
         setMedicineSuggestions([]);
       }
     }, 300);
@@ -177,7 +186,7 @@ export const PrescriptionFormPage: FC<PropsType> = ({
     return () => clearTimeout(timer);
   }, [medicine]);
 
-  // -------------------- Save to Backend --------------------
+  // -------------------- Save --------------------
   const [saveClicked, setSaveClicked] = useState(false);
 
   const saveAppointment = async () => {
@@ -193,10 +202,10 @@ export const PrescriptionFormPage: FC<PropsType> = ({
         phone: String(mobile),
         email: String(email),
         department: String(department),
-        doctorName: "Dr. Example",
+        doctorName: userData?.name || "Unknown Doctor",
         complaints: complaintsList.map(
           (c) => `${c.complaint} ${c.time} ${c.selectTime}`
-        ), // <-- array of strings
+        ),
         medicines: prescribedList.map((p) => ({
           name: String(p.medicine),
           dosage: String(p.dose),
@@ -205,41 +214,50 @@ export const PrescriptionFormPage: FC<PropsType> = ({
         })),
       };
 
-      const res = await assuranceAPI.addAppoinments(payload);
-      console.log("Saved successfully", res);
+      await assuranceAPI.addAppoinments(payload);
       alert("Appointment saved successfully!");
-    } catch (err) {
-      console.error("Failed to save appointment", err);
+
+      setComplaintsList([]);
+      setPrescribedList([]);
+      setComplaint("");
+      setTime("");
+      setSelectedTime("");
+      setComplaintSuggestions([]);
+      setMedicine("");
+      setDose("");
+      setCustomDose("");
+      setQuantity("");
+      setDuration("");
+      setSelectedTime1("");
+      setWhenToTake("");
+      setNotes("");
+      setMedicineSuggestions([]);
+    } catch {
       alert("Failed to save appointment");
     }
   };
 
-  // useEffect triggers save when saveClicked changes
   useEffect(() => {
     if (!saveClicked) return;
-    saveAppointment().finally(() => setSaveClicked(false)); // reset after save
+    saveAppointment().finally(() => setSaveClicked(false));
   }, [saveClicked]);
 
-  // Add complaint
+  // -------------------- Add / Remove --------------------
   const addComplaint = () => {
     if (!complaint) return;
-
     setComplaintsList([...complaintsList, { complaint, time, selectTime }]);
-
     setComplaint("");
     setTime("");
     setSelectedTime("");
     setComplaintSuggestions([]);
   };
 
-  // Remove complaint
-  const removeComplaint = (index: number) => {
+  const removeComplaint = (index: number) =>
     setComplaintsList(complaintsList.filter((_, i) => i !== index));
-  };
 
-  // -------------------- Add Prescription --------------------
   const addPrescription = () => {
     if (!medicine.trim()) return;
+
     setPrescribedList([
       ...prescribedList,
       {
@@ -249,9 +267,9 @@ export const PrescriptionFormPage: FC<PropsType> = ({
         duration,
         selectTime1,
         whenToTake,
-        // notes,
       },
     ]);
+
     setMedicine("");
     setDose("");
     setCustomDose("");
@@ -273,11 +291,11 @@ export const PrescriptionFormPage: FC<PropsType> = ({
   );
 
   return (
-    <div className="p-6 bg-white rounded-md max-w-5xl mx-auto mt-6 shadow-md">
+    <div className="p-2 bg-white rounded-md mx-auto shadow-md">
       {/* Patient Info */}
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-4 gap-2">
         <FormInput
-          label="ID"
+          label="ID (Employee ID)"
           value={id}
           onChange={(e) => setId(e.target.value)}
         />
@@ -305,13 +323,15 @@ export const PrescriptionFormPage: FC<PropsType> = ({
 
       {/* Complaints */}
       <h3 className="font-semibold text-lg mt-4 mb-2">Complaints</h3>
+
       <div className="grid grid-cols-4 gap-4 mb-2">
         <FormInput
           label="Complaint"
           value={complaint}
           onChange={(e) => setComplaint(e.target.value)}
-          inputProps={{ list: "complaint-suggestions" }}
+          list="complaint-suggestions"
         />
+
         <datalist id="complaint-suggestions">
           {complaintSuggestions.map((s, i) => (
             <option key={i} value={s} />
@@ -323,6 +343,7 @@ export const PrescriptionFormPage: FC<PropsType> = ({
           value={time}
           onChange={(e) => setTime(e.target.value)}
         />
+
         <FormInputSelect
           label="সময়কাল"
           placeholder="সময়কাল নির্বাচন করুন"
@@ -330,7 +351,8 @@ export const PrescriptionFormPage: FC<PropsType> = ({
           value={selectTime}
           onChange={setSelectedTime}
         />
-        <div className="centered-flex mt-5">
+
+        <div className="flex justify-start mt-6">
           <Button
             className="bg-primary px-4 py-2 text-sm"
             onClick={addComplaint}
@@ -339,6 +361,7 @@ export const PrescriptionFormPage: FC<PropsType> = ({
           </Button>
         </div>
       </div>
+
       {complaintsList.map((c, i) => (
         <div
           key={i}
@@ -347,23 +370,21 @@ export const PrescriptionFormPage: FC<PropsType> = ({
           <span>
             {c.complaint} {c.time} {c.selectTime}
           </span>
-          <RemoveBtn
-            onClick={() =>
-              setComplaintsList(complaintsList.filter((_, idx) => idx !== i))
-            }
-          />
+          <RemoveBtn onClick={() => removeComplaint(i)} />
         </div>
       ))}
 
       {/* Prescriptions */}
       <h3 className="font-semibold text-lg mt-6 mb-2">Prescribed Medicine</h3>
-      <div className="grid grid-cols-3 gap-4">
+
+      <div className="grid grid-cols-5 gap-4">
         <FormInput
           label="Medicine"
           value={medicine}
           onChange={(e) => setMedicine(e.target.value)}
-          inputProps={{ list: "medicine-list" }}
+          list="medicine-list"
         />
+
         <datalist id="medicine-list">
           {medicineSuggestions.map((m, i) => (
             <option key={i} value={m} />
@@ -377,6 +398,7 @@ export const PrescriptionFormPage: FC<PropsType> = ({
           value={dose}
           onChange={setDose}
         />
+
         {dose === "custom" && (
           <FormInput
             label="Custom Dose"
@@ -385,26 +407,13 @@ export const PrescriptionFormPage: FC<PropsType> = ({
             onChange={(e) => setCustomDose(e.target.value)}
           />
         )}
-      </div>
 
-      <div className="grid grid-cols-4 gap-4 mt-2">
         <FormInput
           label="Quantity"
           value={quantity}
           onChange={(e) => setQuantity(e.target.value)}
         />
-        {/* <FormInput
-          label="Duration"
-          value={duration}
-          onChange={(e) => setDuration(e.target.value)}
-        /> */}
-        {/* <FormInputSelect
-          label="সময়কাল"
-          placeholder="সময়কাল নির্বাচন করুন"
-          items={timeOptions}
-          value={selectTime1}
-          onChange={setSelectedTime1}
-        /> */}
+
         <FormInputSelect
           label="When to take"
           placeholder="সময় নির্বাচন করুন"
@@ -412,17 +421,13 @@ export const PrescriptionFormPage: FC<PropsType> = ({
           value={whenToTake}
           onChange={setWhenToTake}
         />
-      </div>
 
-      {/* <Textarea
-        className="mt-3"
-        placeholder="Notes"
-        value={notes}
-        onChange={(e) => setNotes(e.target.value)}
-      /> */}
-      <Button className="bg-primary mt-4" onClick={addPrescription}>
-        Add
-      </Button>
+        <div className="flex justify-start mt-1">
+          <Button className="bg-primary mt-4" onClick={addPrescription}>
+            Add
+          </Button>
+        </div>
+      </div>
 
       {prescribedList.map((p, i) => (
         <div
@@ -446,7 +451,8 @@ export const PrescriptionFormPage: FC<PropsType> = ({
           <Button className="bg-blue-600" onClick={() => setPreviewOpen(true)}>
             Preview
           </Button>
-          <Button
+
+          {/* <Button
             className="bg-green-600"
             onClick={() =>
               generatePrescriptionPDF({
@@ -459,10 +465,17 @@ export const PrescriptionFormPage: FC<PropsType> = ({
             }
           >
             Generate PDF
-          </Button>
+          </Button> */}
         </div>
 
-        <Button className="bg-purple-600" onClick={() => setSaveClicked(true)}>
+        <Button
+          className="bg-purple-600 flex items-center justify-center gap-2"
+          onClick={() => setSaveClicked(true)}
+          disabled={saveClicked}
+        >
+          {saveClicked && (
+            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+          )}
           Send
         </Button>
       </div>

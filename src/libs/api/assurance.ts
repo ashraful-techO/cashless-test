@@ -24,6 +24,11 @@ class AssuranceAPI extends BaseAPI {
   //   return this.get<BR<IAllAppoinmentdata>>(`appointments?${params}`);
   // };
 
+  /** Fetch all appointments */
+  getAllAppointments = () => {
+    return this.get<BR<IAllAppoinmentdata>>(`appointments/`);
+  };
+
   /** Fetch single appointment by employeeId */
   getAppointmentById = (employeeId: string) => {
     if (!employeeId) throw new Error("employeeId is required");

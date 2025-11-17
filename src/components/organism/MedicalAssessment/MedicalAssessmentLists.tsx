@@ -1,22 +1,21 @@
 "use client";
 
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useRef } from "react";
 import { PrescriptionFormPage } from "./PrescriptionFormPage";
 import { PreviousAppointment } from "./PreviousAppoinment";
 import {
   Appoinmentdata,
   IAllAppoinmentdata,
 } from "@/libs/api/interface/assuarace";
-import { assuranceAPI } from "@/libs/api";
 import { mapBackendToFrontend } from "@/utils/mappers";
+import { AllAppointmentsModal } from "./AppoinmentListModal";
+
 
 interface PropsType {
   data: IAllAppoinmentdata | null;
   loading: boolean;
   selectdata: Appoinmentdata;
   setSelectData: (data: Appoinmentdata | null) => void;
-  updateData?: () => Promise<void>;
-  onIdChange?: (id: string) => void;
 }
 
 export const MedicalAssessmentLists: FC<PropsType> = ({
@@ -24,42 +23,59 @@ export const MedicalAssessmentLists: FC<PropsType> = ({
   loading,
   selectdata,
   setSelectData,
-  updateData,
 }) => {
   const [appointmentId, setAppointmentId] = useState(selectdata?.id || "");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Fetch latest appointment by ID
+  // 🟦 Track if this is the first effect run
+  const firstRun = useRef(true);
+
+  // Sync state when selectdata.id changes
+  useEffect(() => {
+    if (selectdata?.id) setAppointmentId(selectdata.id);
+  }, [selectdata?.id]);
+
+  // Fetch latest appointment **only after the first run**
   useEffect(() => {
     if (!appointmentId) return;
 
+    if (firstRun.current) {
+      firstRun.current = false;
+      return;
+    }
+
     const fetchAppointment = async () => {
       try {
-        const res = await assuranceAPI.getAppointmentById(appointmentId);
-
-        if (res.data && res.data.success) {
-          const latest = res.data.data[res.data.data.length - 1];
-          const mapped = mapBackendToFrontend(latest);
-          setSelectData(mapped);
-        } else {
-          setSelectData(null);
-        }
+        const res = await fetch(
+          `/api/appointments/${appointmentId}` // or your API call
+        );
+        // Map data as needed
       } catch (err) {
         console.error("Failed to fetch appointment", err);
-        setSelectData(null);
       }
     };
 
     fetchAppointment();
-  }, [appointmentId, setSelectData]);
+  }, [appointmentId]);
 
   return (
-    <div className="bg-default p-6 mt-10 relative">
-      <div className="grid grid-cols-9 gap-6">
-        {/* Left Column */}
-        <div className="col-span-6 bg-white p-4 rounded-md shadow-md">
-          <h1 className="text-xl font-semibold text-gray-800 mb-6">
-            Medical Assessment
-          </h1>
+    <div className="bg-default p-2 mt-12 relative">
+      <div className="grid grid-cols-12 gap-1">
+        {/* LEFT */}
+        <div className="col-span-9 bg-white p-2 rounded-md shadow-md">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-xl font-semibold text-gray-800 mb-6">
+              Medical Appointments
+            </h1>
+
+            {/* Open modal on click */}
+            <button
+              className="bg-primary px-4 py-2 text-sm text-white rounded-md"
+              onClick={() => setIsModalOpen(true)}
+            >
+              All Appointments
+            </button>
+          </div>
 
           <PrescriptionFormPage
             selectdata={
@@ -78,12 +94,11 @@ export const MedicalAssessmentLists: FC<PropsType> = ({
               }
             }
             onIdChange={setAppointmentId}
-            updateData={updateData}
           />
         </div>
 
-        {/* Right Column */}
-        <div className="col-span-3 bg-white p-4 rounded-md shadow-md">
+        {/* RIGHT */}
+        <div className="col-span-3 bg-white p-2 rounded-md shadow-md">
           <h1 className="text-xl font-semibold text-gray-800 mb-6">
             Previous History
           </h1>
@@ -95,6 +110,12 @@ export const MedicalAssessmentLists: FC<PropsType> = ({
           )}
         </div>
       </div>
+
+      {/* Modal */}
+      <AllAppointmentsModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };

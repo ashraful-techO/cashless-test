@@ -1,5 +1,4 @@
 import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
 
 interface PrescriptionData {
   id: string;
@@ -7,17 +6,14 @@ interface PrescriptionData {
   department: string;
   complaintsList: {
     complaint: string;
-    time: string;
-    selectTime: string;
   }[];
   prescribedList: {
     customDose: string;
     medicine: string;
     dose: string;
     duration: string;
-    selectTime1: string; // ✅ correct field
+    quantity?: number | string;
     whenToTake: string;
-    notes: string;
   }[];
 }
 
@@ -40,12 +36,11 @@ export const generatePrescriptionPDF = ({
   doc.text("House 7, Road 6, Baridhara, Dhaka", 14, 22);
   doc.text("Hotline: 09600000000 | Email: info@medlife.com", 14, 28);
 
-  // Divider
+  // Divider line
   doc.setLineWidth(0.5);
   doc.line(14, 32, 196, 32);
 
   // ========== PATIENT INFO ==========
-
   const today = new Date();
   const formattedDate = `${String(today.getDate()).padStart(2, "0")}/${String(
     today.getMonth() + 1
@@ -59,69 +54,74 @@ export const generatePrescriptionPDF = ({
   doc.text(`ID: ${id}`, 14, 48);
   doc.text(`Name: ${name}`, 14, 54);
   doc.text(`Department: ${department}`, 14, 60);
-
   doc.text(`Date: ${formattedDate}`, 150, 48);
 
-  let y = 70;
+  // ========== TWO COLUMNS ==========
+  const startY = 70;
+  const leftX = 14;
+  const verticalLineX = 80; // shifted more left
+  const rightX = 85; // start of medicine column
 
-  // ========== COMPLAINTS ==========
+  // Draw vertical line
+  doc.setLineWidth(0.3);
+  doc.line(verticalLineX, startY - 10, verticalLineX, 250);
+
+  // ========== Complaints (Left) ==========
   if (complaintsList.length > 0) {
     doc.setFont("helvetica", "bold");
-    doc.text("Complaints", 14, y);
-    y += 4;
+    doc.text("Complaints", leftX, startY);
+    doc.setFont("helvetica", "normal");
 
-    autoTable(doc, {
-      startY: y,
-      head: [["Complaint", "Duration"]],
-      body: complaintsList.map((c) => [
-        c.complaint,
-        `${c.time} ${c.selectTime}`,
-      ]),
-      styles: { fontSize: 11 },
-      headStyles: { fillColor: [255, 0, 101] },
+    let y = startY + 6;
+    complaintsList.forEach((c) => {
+      doc.text(`• ${c.complaint}`, leftX, y);
+      y += 6; // spacing between complaints
     });
-
-    y = (doc as any).lastAutoTable.finalY + 10;
+    var complaintsEndY = y;
+  } else {
+    var complaintsEndY = startY;
   }
 
-
-
-  // ========== PRESCRIPTION ==========
+  // ========== Prescribed Medicines (Right) ==========
   if (prescribedList.length > 0) {
     doc.setFont("helvetica", "bold");
-    doc.text("Prescribed Medicines", 14, y);
-    y += 4;
+    doc.text("Prescribed Medicines", rightX, startY);
+    doc.setFont("helvetica", "normal");
 
-    autoTable(doc, {
-      startY: y,
-      head: [["Medicine", "Dose", "Duration", "When to Take", "Notes"]],
-      body: prescribedList.map((p) => [
-        p.medicine,
-        p.dose || p.customDose, // ✅ include customDose
-        `${p.duration} ${p.selectTime1}`, // ✅ duration time
-        p.whenToTake,
-        p.notes || "",
-      ]),
-      styles: { fontSize: 11 },
-      headStyles: { fillColor: [255, 0, 101] },
+    let y = startY + 6;
+    prescribedList.forEach((p, index) => {
+      doc.text(`${index + 1}. ${p.medicine}`, rightX, y);
+      y += 6;
+      const doseText = `${p.dose || p.customDose} -- Qty: ${
+        p.quantity || "-"
+      } -- ${p.whenToTake}`;
+      doc.text(doseText, rightX + 4, y); // indented for clarity
+      y += 8; // spacing between medicines
     });
-
-    y = (doc as any).lastAutoTable.finalY + 15;
+    var medicineEndY = y;
+  } else {
+    var medicineEndY = startY;
   }
 
   // ========== SIGNATURE ==========
+  const extraSpace = 40; // extra space below content
+  const signatureY = Math.max(complaintsEndY, medicineEndY) + extraSpace;
+
   doc.setFont("helvetica", "normal");
+  // Horizontal signature line
+  doc.text(
+    "------------------------------------------------------",
+    130,
+    signatureY
+  );
 
-  // Draw signature line
-  doc.text("------------------------------------------------------", 130, y);
-
-  // Add "Signed" above the line
+  // Small "Signed" text above the line
   doc.setFontSize(10);
-  doc.text("Signed", 160, y - 4); // adjust y-4 to place above the line
+  doc.text("Signed", 160, signatureY - 4);
 
-  // Add "Doctor's Signature" below the line
+  // "Doctor's Signature" text below the line
   doc.setFontSize(12);
-  doc.text("Doctor's Signature", 150, y + 6);
+  doc.text("Doctor's Signature", 150, signatureY + 6);
 
   // Save PDF
   doc.save(`Prescription_${id}.pdf`);

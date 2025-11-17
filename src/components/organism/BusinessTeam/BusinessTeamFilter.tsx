@@ -63,7 +63,7 @@ export const BusinessTeamFilter = () => {
   return (
     <div className="grid grid-cols-12 items-end">
       <div className="col-span-7">
-        {tabData?.map((el, i) => (
+        {/* {tabData?.map((el, i) => (
           <Button
             key={i}
             // onClick={() => router?.push(`/medical-assessment?${el?.queryPath}=${el?.value}`)}
@@ -76,7 +76,7 @@ export const BusinessTeamFilter = () => {
           >
             {formatStatus(el?.title)}
           </Button>
-        ))}
+        ))} */}
       </div>
 
       {/* <div className="col-span-5">

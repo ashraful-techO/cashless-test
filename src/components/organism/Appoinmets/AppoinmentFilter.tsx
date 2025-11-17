@@ -26,7 +26,7 @@ export const AppoinmentFilter = () => {
   return (
     <div className="grid grid-cols-12 items-end">
       <div className="col-span-7">
-        {tabData?.map((el, i) => (
+        {/* {tabData?.map((el, i) => (
           <Button
             key={i}
             // onClick={() => router?.push(`/appoinment?csAppointmentStatus=${el}`)}
@@ -39,7 +39,7 @@ export const AppoinmentFilter = () => {
           >
             {el}
           </Button>
-        ))}
+        ))} */}
       </div>
 
       {/* <div className="col-span-5">

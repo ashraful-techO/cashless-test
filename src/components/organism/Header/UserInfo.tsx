@@ -15,14 +15,21 @@ export const UserInfo = () => {
 
   const { userData } = useSelector(getUserState);
 
+  // console.log("User Data in UserInfo:", userData?.name);
+
   return (
     <div>
       <Menu placement="bottom-end">
         <MenuHandler>
           <div className="flex items-center">
-            <p className="text-secondary/100">
-              <span className="text-[12px]">{userData?.userType}</span>
-            </p>
+            <div className="flex flex-col items-start">
+              <p className="text-secondary/100 text-[14px]">
+                {userData?.userType}
+              </p>
+              <p className="text-secondary/100 text-[14px]">
+                <span className="text-[12px]">{userData?.name}</span>
+              </p>
+            </div>
             <Avatar
               src="./images/avatar.jpg"
               size="sm"

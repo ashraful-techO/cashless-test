@@ -103,7 +103,7 @@ export const AddAssessmentUnit = () => {
     }
 
     try {
-      const { success, message } = await assuranceAPI.addBancassurance(
+      const { success, message } = await assuranceAPI.addAppoinments(
         formData
       );
       if (!success) {

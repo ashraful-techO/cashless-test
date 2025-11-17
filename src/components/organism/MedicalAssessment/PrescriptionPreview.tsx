@@ -56,17 +56,6 @@ export const PrescriptionPreview: FC<PrescriptionPreviewProps> = ({
         </div>
       )}
 
-      {/* History */}
-      {historyList.length > 0 && (
-        <div className="mb-4">
-          <h4 className="font-semibold">History</h4>
-          <ul className="list-disc list-inside">
-            {historyList.map((h, i) => (
-              <li key={i}>{h}</li> // ✅ render as string
-            ))}
-          </ul>
-        </div>
-      )}
 
       {/* Drug History */}
       {drugList.length > 0 && (
@@ -101,7 +90,6 @@ export const PrescriptionPreview: FC<PrescriptionPreviewProps> = ({
                   <td className="border p-2">{p.dose}</td>
                   <td className="border p-2">{p.duration}</td>
                   <td className="border p-2">{p.whenToTake}</td>
-                  <td className="border p-2">{p.notes}</td>
                 </tr>
               ))}
             </tbody>

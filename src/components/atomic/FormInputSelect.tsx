@@ -58,7 +58,7 @@ export const FormInputSelect: FC<ISelectPropsType> = ({
             error
               ? "!border-red-500 focus:!border-red-500 focus:ring-red-500/10"
               : "!border-gray-100 focus:!border-primary focus:ring-primary/10"
-          } !border !rounded-[4px] !h-[30px] text-gray-900 ring-4 ring-transparent 
+          } !border !rounded-[4px] !h-[40px] text-gray-900 ring-4 ring-transparent 
           placeholder:text-gray-500 w-full ${
             disabled ? "bg-gray-100 cursor-not-allowed" : ""
           }`}

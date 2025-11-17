@@ -22,6 +22,8 @@ export interface Medicine {
 }
 
 export interface Appoinmentdata {
+  employeeDepartment: string;
+  employeeName: string;
   id: string;
   employeeId: string;
   name: string;
