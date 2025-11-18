@@ -1,4 +1,5 @@
 export interface IAllAppoinmentdata {
+  appointments: never[];
   name: string;
   phone: string;
   email: string;
@@ -12,12 +13,13 @@ export interface IAllAppoinmentdata {
   pageNumber: number;
   success: boolean;
   message: string | null;
+  items: Appoinmentdata[];
 }
 
 export interface Medicine {
   name: string;
   dosage: string;
-  quantity: number;
+  quantity: string;
   instructions: string;
 }
 

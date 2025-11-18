@@ -6,7 +6,7 @@ import { assuranceAPI } from "@/libs/api";
 interface Medicine {
   name: string;
   dosage: string;
-  quantity: number;
+  quantity: string;
   instructions: string;
 }
 

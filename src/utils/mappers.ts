@@ -1,4 +1,3 @@
-// utils/mappers.ts
 import { Appoinmentdata } from "@/libs/api/interface/assuarace";
 
 export const mapBackendToFrontend = (d: any): Appoinmentdata => ({
@@ -13,4 +12,6 @@ export const mapBackendToFrontend = (d: any): Appoinmentdata => ({
   medicines: d.medicines || [],
   createdAt: d.createdAt || "",
   updatedAt: d.updatedAt || "",
+  employeeDepartment: "",
+  employeeName: ""
 });

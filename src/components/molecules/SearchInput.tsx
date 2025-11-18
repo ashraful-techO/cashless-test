@@ -4,10 +4,19 @@ import { useDebounce } from "@/libs/hooks";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 import { FormInput } from "../atomic";
+
+interface PropsType {
+  searchKey: string;
+  placeholder: string;
+  bgColor?: boolean;
+  onChange?: (val: string) => void; 
+}
+
 export const SearchInput: FC<PropsType> = ({
   searchKey,
   placeholder,
   bgColor,
+  onChange,
   ...rest
 }) => {
   const [searchText, setSearchText] = useState<string>("");
@@ -15,11 +24,13 @@ export const SearchInput: FC<PropsType> = ({
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  // Initialize from URL
   useEffect(() => {
     const searchParamValue = searchParams.get(searchKey);
     setSearchText(searchParamValue ?? "");
-  }, [searchParams]);
+  }, [searchParams, searchKey]);
 
+  // Update URL whenever debounced value changes
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
 
@@ -31,7 +42,8 @@ export const SearchInput: FC<PropsType> = ({
     params.delete("page");
 
     router.push(`?${params.toString()}`);
-  }, [value]);
+    onChange?.(value ?? ""); // send value to parent
+  }, [value, searchKey, searchParams, router, onChange]);
 
   return (
     <div className="w-full">
@@ -44,14 +56,8 @@ export const SearchInput: FC<PropsType> = ({
         }}
         {...rest}
         icon={search}
-        bgColor
+        bgColor={bgColor}
       />
     </div>
   );
 };
-
-interface PropsType {
-  searchKey: string;
-  placeholder: string;
-  bgColor?: boolean;
-}

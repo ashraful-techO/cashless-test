@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 interface Medicine {
   name: string;
   dosage: string;
-  quantity: number;
+  quantity: string;
   instructions: string;
 }
 
@@ -209,7 +209,7 @@ export const PrescriptionFormPage: FC<PropsType> = ({
         medicines: prescribedList.map((p) => ({
           name: String(p.medicine),
           dosage: String(p.dose),
-          quantity: Number(p.quantity) || 0,
+          quantity: String(p.quantity) || 0,
           instructions: String(p.whenToTake || ""),
         })),
       };
@@ -284,7 +284,7 @@ export const PrescriptionFormPage: FC<PropsType> = ({
   const RemoveBtn = ({ onClick }: { onClick: () => void }) => (
     <button
       onClick={onClick}
-      className="ml-2 w-6 h-6 flex items-center justify-center rounded-full bg-red-500 text-white text-lg leading-none"
+      className="ml-2 w-5 h-2 flex items-center justify-center  bg-red-500 text-white text-sm leading-none"
     >
       –
     </button>
@@ -362,22 +362,24 @@ export const PrescriptionFormPage: FC<PropsType> = ({
         </div>
       </div>
 
-      {complaintsList.map((c, i) => (
-        <div
-          key={i}
-          className="border p-2 rounded flex items-center justify-between mb-1"
-        >
-          <span>
-            {c.complaint} {c.time} {c.selectTime}
-          </span>
-          <RemoveBtn onClick={() => removeComplaint(i)} />
-        </div>
-      ))}
+      <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-4 gap-2 mb-2">
+        {complaintsList.map((c, i) => (
+          <div
+            key={i}
+            className="text-xs border p-2 rounded flex items-center justify-between"
+          >
+            <span>
+              {c.complaint} {c.time} {c.selectTime}
+            </span>
+            <RemoveBtn onClick={() => removeComplaint(i)} />
+          </div>
+        ))}
+      </div>
 
       {/* Prescriptions */}
-      <h3 className="font-semibold text-lg mt-6 mb-2">Prescribed Medicine</h3>
+      <h3 className="font-semibold text-sm mt-6 mb-2">Prescribed Medicine</h3>
 
-      <div className="grid grid-cols-5 gap-4">
+      <div className="grid grid-cols-4 gap-2">
         <FormInput
           label="Medicine"
           value={medicine}
@@ -429,21 +431,23 @@ export const PrescriptionFormPage: FC<PropsType> = ({
         </div>
       </div>
 
-      {prescribedList.map((p, i) => (
-        <div
-          key={i}
-          className="border p-2 rounded flex items-center justify-between mb-1"
-        >
-          <span>
-            {p.medicine} - {p.dose} - Qty: {p.quantity} - {p.whenToTake}
-          </span>
-          <RemoveBtn
-            onClick={() =>
-              setPrescribedList(prescribedList.filter((_, idx) => idx !== i))
-            }
-          />
-        </div>
-      ))}
+      <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-4 gap-2 mb-2">
+        {prescribedList.map((p, i) => (
+          <div
+            key={i}
+            className="text-xs border p-2 rounded flex items-center justify-between"
+          >
+            <span>
+              {p.medicine} - {p.dose} - Qty: {p.quantity} - {p.whenToTake}
+            </span>
+            <RemoveBtn
+              onClick={() =>
+                setPrescribedList(prescribedList.filter((_, idx) => idx !== i))
+              }
+            />
+          </div>
+        ))}
+      </div>
 
       {/* Footer Buttons */}
       <div className="flex justify-between mt-6">

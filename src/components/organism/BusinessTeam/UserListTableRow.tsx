@@ -17,15 +17,7 @@ interface PropsType {
 }
 
 export const UserListTableRow: FC<PropsType> = ({ data, slNo, updateData }) => {
-  const bgColor =
-    !data?.medicalStatus && !data?.testStatus
-      ? "" // just submitted
-      : data?.medicalStatus === "COMPLETED" &&
-        (data?.testStatus === "COMPLETED" || data?.testStatus === "NA")
-        ? "bg-green-50"
-        : data?.medicalStatus === "COMPLETED" && data?.testStatus === "PENDING"
-          ? "bg-yellow-50"
-          : "";
+
 
   return (
     <>
@@ -35,54 +27,54 @@ export const UserListTableRow: FC<PropsType> = ({ data, slNo, updateData }) => {
         <p className="text-xs">{slNo}</p>
       </td>
 
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs">{formatStatus(data?.agentCode)}</p>
       </td>
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs">{formatStatus(data?.agentName)}</p>
       </td>
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs">{formatStatus(data?.agentMobile)}</p>
       </td>
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs">{formatStatus(data?.branchManagerName)}</p>
       </td>
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs">{formatStatus(data?.branchManagerMobile)}</p>
       </td>
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs">{formatStatus(data?.unitManagerName)}</p>
       </td>
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs">{formatStatus(data?.unitManagerMobile)}</p>
       </td>
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs">{data?.policyNumber}</p>
       </td>
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs">{data?.policyOwnerName}</p>
       </td>
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs">{data?.mobile}</p>
       </td>
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs">{data?.gender}</p>
       </td>
 
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs">{data?.address}</p>
       </td>
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs">{formatStatus(data?.applicantsType)}</p>
       </td>
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs">{data?.isRequiredMedical ? "Yes" : "No"}</p>
       </td>
 
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs">{data?.medicalInfo}</p>
       </td>
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs">
           {data?.medicalAppointmentDate &&
             dateformat(
@@ -91,25 +83,25 @@ export const UserListTableRow: FC<PropsType> = ({ data, slNo, updateData }) => {
             )}
         </p>
       </td>
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs">{data?.isRequiredTest ? "Yes" : "No"}</p>
       </td>
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs">{data?.requiredTest}</p>
       </td>
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs">{data?.requiredOtherTest}</p>
       </td>
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs">
           {data?.testAppointmentDate &&
             dateformat(data?.testAppointmentDate, "UTC:mmmm dd, yyyy, h:MM TT")}
         </p>
       </td>
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs truncate overflow-hidden whitespace-nowrap max-w-[150px]" title={data?.diagnosticInfo}>{data?.diagnosticInfo}</p>
       </td>
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs">
           {data?.medicalStatus && (
             <ChipByStatus
@@ -119,7 +111,7 @@ export const UserListTableRow: FC<PropsType> = ({ data, slNo, updateData }) => {
           )}
         </p>
       </td>
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs">
           {data?.testStatus && (
             <ChipByStatus
@@ -130,7 +122,7 @@ export const UserListTableRow: FC<PropsType> = ({ data, slNo, updateData }) => {
         </p>
       </td>
       <td
-        className={`p-4 border-b border-blue-gray-50 ${bgColor}`}
+        className={`p-4 border-b border-blue-gray-50 `}
         onClick={(e) => e.stopPropagation()}
       >
         {data?.medicalDocument?.map(
@@ -152,7 +144,7 @@ export const UserListTableRow: FC<PropsType> = ({ data, slNo, updateData }) => {
         )}
       </td>
       <td
-        className={`p-4 border-b border-blue-gray-50 flex gap-0.5 ${bgColor}`}
+        className={`p-4 border-b border-blue-gray-50 flex gap-0.5 `}
         onClick={(e) => e.stopPropagation()}
       >
         {data?.medicalDocument?.map(
@@ -172,7 +164,7 @@ export const UserListTableRow: FC<PropsType> = ({ data, slNo, updateData }) => {
             )
         )}
       </td>
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         {data?.testDocument?.map((el, i) => (
           <Link href={el} key={i} target="_blank" rel="noopener noreferrer">
             <Button className="bg-purple-700 text-white px-2 py-1 shadow-none hover:shadow-md text-[8px] normal-case font-semibold">
@@ -181,7 +173,7 @@ export const UserListTableRow: FC<PropsType> = ({ data, slNo, updateData }) => {
           </Link>
         ))}
       </td>
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs">
           {data?.overallStatus && (
             <ChipByStatus
@@ -191,13 +183,13 @@ export const UserListTableRow: FC<PropsType> = ({ data, slNo, updateData }) => {
           )}
         </p>
       </td>
-      <td className={`p-4 border-b border-blue-gray-50 ${bgColor}`}>
+      <td className={`p-4 border-b border-blue-gray-50 `}>
         <p className="text-xs truncate overflow-hidden whitespace-nowrap max-w-[150px]" title={data?.comment}>{data?.comment}</p>
       </td>
 
 
       <td
-        className={`p-4 border-b border-blue-gray-50 ${bgColor}`}
+        className={`p-4 border-b border-blue-gray-50 `}
         onClick={(e) => e.stopPropagation()}
       >
         <MenuItems data={data} updateData={updateData} />

@@ -16,6 +16,8 @@ export interface ISelectPropsType {
   error?: string;
   disabled?: boolean;
   onChange?: (e: any) => void;
+  widthClass?: string; // NEW: custom width for wrapper
+  dropdownWidthClass?: string; // NEW: custom width for dropdown menu
 }
 
 export const FormInputSelect: FC<ISelectPropsType> = ({
@@ -26,10 +28,12 @@ export const FormInputSelect: FC<ISelectPropsType> = ({
   disabled,
   onChange,
   value,
+  widthClass = "w-full", // default full width
+  dropdownWidthClass = "w-full", // default dropdown matches select
   ...rest
 }) => {
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className={`flex flex-col items-center ${widthClass}`}>
       {/* Label */}
       {label && (
         <p
@@ -42,16 +46,12 @@ export const FormInputSelect: FC<ISelectPropsType> = ({
       )}
 
       {/* Select Wrapper */}
-      <div
-        className={`relative w-34 max-w-xs ${disabled ? "opacity-90" : ""}`}
-      >
+      <div className={`relative ${disabled ? "opacity-90" : ""}`}>
         <Select
           {...rest}
           value={value}
-          onChange={disabled ? undefined : onChange} // prevent change if disabled
-          labelProps={{
-            className: "before:content-none after:content-none",
-          }}
+          onChange={disabled ? undefined : onChange}
+          labelProps={{ className: "before:content-none after:content-none" }}
           disabled={disabled}
           error={!!error}
           className={`${
@@ -62,12 +62,13 @@ export const FormInputSelect: FC<ISelectPropsType> = ({
           placeholder:text-gray-500 w-full ${
             disabled ? "bg-gray-100 cursor-not-allowed" : ""
           }`}
+          menuProps={{ className: dropdownWidthClass }}
         >
           {items.map((item, i) => (
             <Option
               key={i}
               value={item.value}
-              className="flex center text-center" // centers the option text
+              className="flex center text-center"
             >
               {item.label}
             </Option>

@@ -67,14 +67,6 @@ export const MedicalAssessmentLists: FC<PropsType> = ({
             <h1 className="text-xl font-semibold text-gray-800 mb-6">
               Medical Appointments
             </h1>
-
-            {/* Open modal on click */}
-            <button
-              className="bg-primary px-4 py-2 text-sm text-white rounded-md"
-              onClick={() => setIsModalOpen(true)}
-            >
-              All Appointments
-            </button>
           </div>
 
           <PrescriptionFormPage
@@ -98,16 +90,20 @@ export const MedicalAssessmentLists: FC<PropsType> = ({
         </div>
 
         {/* RIGHT */}
-        <div className="col-span-3 bg-white p-2 rounded-md shadow-md">
-          <h1 className="text-xl font-semibold text-gray-800 mb-6">
+        <div className="col-span-3 bg-white p-2 rounded-md shadow-md flex flex-col">
+          <h1 className="text-xl font-semibold text-gray-800 mb-4">
             Previous History
           </h1>
 
-          {appointmentId ? (
-            <PreviousAppointment appointmentId={appointmentId} />
-          ) : (
-            <p className="text-gray-500">Enter an ID to see previous history</p>
-          )}
+          <div className="flex-1 overflow-y-auto max-h-[600px]">
+            {appointmentId ? (
+              <PreviousAppointment appointmentId={appointmentId} />
+            ) : (
+              <p className="text-gray-500">
+                Enter an ID to see previous history
+              </p>
+            )}
+          </div>
         </div>
       </div>
 
