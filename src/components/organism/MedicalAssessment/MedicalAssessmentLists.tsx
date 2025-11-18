@@ -106,12 +106,6 @@ export const MedicalAssessmentLists: FC<PropsType> = ({
           </div>
         </div>
       </div>
-
-      {/* Modal */}
-      <AllAppointmentsModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
     </div>
   );
 };
