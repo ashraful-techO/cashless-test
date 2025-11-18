@@ -36,7 +36,7 @@ export const BusinessTeamUnit = () => {
     // if (!query?.csAppointmentStatus) query.csAppointmentStatus = "PENDING";
 
     try {
-      const { success, data, message } = await assuranceAPI.getAppoinmentData(
+      const { success, data, message } = await assuranceAPI.getAllAppointments(
         query
       );
 
@@ -52,27 +52,15 @@ export const BusinessTeamUnit = () => {
     getTableData();
   }, [
     page,
-    csAppointmentStatus,
     fromDate,
     toDate,
     search,
-    medicalStatus,
-    testStatus,
+
   ]);
 
   return (
     <div className="mt-[-60px]">
-      {/* <div className="flex items-center gap-6">
-        <div className="w-full">
-          <BusinessTeamFilter />
-        </div>
-        <Button
-          className={` bg-primary text-white shadow-none text-sm hover:shadow-none py-2 px-3 whitespace-nowrap mt-9`}
-          onClick={() => setCreateUserModal(true)}
-        >
-          Add User
-        </Button>
-      </div> */}
+     
 
       <UserLists
         data={tableData as any}

@@ -12,8 +12,8 @@ interface PropsType {
 
 const ClientTableHeader: string[] = [
   "SN",
-  "Employee ID",
   "Name",
+  "Employee ID",
   "Department",
   " Complaints",
   " Medicine name",
@@ -32,14 +32,12 @@ export const AllAppointmentsList: FC<PropsType> = ({
         <ReusableTable
           tableHeader={ClientTableHeader}
           isLoading={loading}
-          data={data?.items}
-        >
+          data={data?.items}>
           {data?.items?.map((el, i) => (
             <tr
               key={i}
               className="cursor-pointer hover:bg-gray-100"
-              onClick={() => setSelectData(el)}
-            >
+              onClick={() => setSelectData(el)}>
               <UserListTableRow
                 data={el}
                 updateData={updateData}

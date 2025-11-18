@@ -25,8 +25,13 @@ class AssuranceAPI extends BaseAPI {
   // };
 
   /** Fetch all appointments */
-  getAllAppointments = () => {
-    return this.get<BR<IAllAppoinmentdata>>(`appointments/`);
+  getAllAppointments = (query: ParsedUrlQuery = {}) => {
+    const optionalParams: Record<string, string> = {};
+
+    if (!query.page) optionalParams.page = "1";
+
+    const params = updateURLSearchParams(query, optionalParams);
+    return this.get<BR<IAllAppoinmentdata>>(`appointments?${params}`);
   };
 
   /** Fetch single appointment by employeeId */

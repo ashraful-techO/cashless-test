@@ -37,23 +37,22 @@ export const MetlifeUnit = () => {
 
   // Function to fetch table data
 
-const getTableData = async () => {
-  setTableDataLoading(true);
+  const getTableData = async () => {
+    setTableDataLoading(true);
+    // if (!query?.csAppointmentStatus) query.csAppointmentStatus = "PENDING";
 
-  try {
-    if (USE_MOCK_DATA) {
-      await new Promise((r) => setTimeout(r, 400)); // simulate delay
-      setTableData(mockUserInfoWrapper);
-    } else {
-      const { success, data } = await assuranceAPI.getAppoinmentData(query);
+    try {
+      const { success, data, message } = await assuranceAPI.getAllAppointments(
+        query
+      );
+
       if (success) setTableData(data);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setTableDataLoading(false);
     }
-  } catch (err) {
-    console.log(err);
-  } finally {
-    setTableDataLoading(false);
-  }
-};
+  };
 
   useEffect(() => {
     getTableData();
