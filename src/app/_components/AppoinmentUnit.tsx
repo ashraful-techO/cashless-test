@@ -33,7 +33,7 @@ export const AppoinmentUnit = () => {
     // if (!query?.csAppointmentStatus) query.csAppointmentStatus = "PENDING";
 
     try {
-      const { success, data, message } = await assuranceAPI.getAppoinmentData(
+      const { success, data, message } = await assuranceAPI.getAllAppointments(
         query
       );
 
