@@ -9,7 +9,7 @@ interface PropsType {
   onClose: () => void;
 }
 
-export const AllAppointmentsModal: FC<PropsType> = ({ isOpen, onClose }) => {
+export const AppoinmentListModal: FC<PropsType> = ({ isOpen, onClose }) => {
   const [appointments, setAppointments] = useState<Appoinmentdata[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -76,7 +76,9 @@ export const AllAppointmentsModal: FC<PropsType> = ({ isOpen, onClose }) => {
                     <td className="p-2 border">{i + 1}</td>
                     <td className="p-2 border">{app.employeeId}</td>
                     <td className="p-2 border">{app.employeeName || "-"}</td>
-                    <td className="p-2 border">{app.employeeDepartment || "-"}</td>
+                    <td className="p-2 border">
+                      {app.employeeDepartment || "-"}
+                    </td>
                     <td className="p-2 border">{app.doctorName || "-"}</td>
                   </tr>
                 ))}

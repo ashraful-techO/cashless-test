@@ -8,7 +8,6 @@ import {
   IAllAppoinmentdata,
 } from "@/libs/api/interface/assuarace";
 import { mapBackendToFrontend } from "@/utils/mappers";
-import { AllAppointmentsModal } from "./AppoinmentListModal";
 
 
 interface PropsType {

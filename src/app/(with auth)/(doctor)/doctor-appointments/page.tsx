@@ -1,11 +1,8 @@
-"use client";
+import { MedicalAssessmentUnit } from "@/app/_components";
+import { NextPage } from "next";
 
-import { AllAppointmentsList } from "@/components/organism/MedicalAssessment/AllAppointmentsList";
+const MedicalAssessment: NextPage = () => {
+  return <MedicalAssessmentUnit />;
+};
 
-export default function DoctorAppointmentsPage() {
-  return (
-    <div className="p-04">
-      <AllAppointmentsList />
-    </div>
-  );
-}
+export default MedicalAssessment;
