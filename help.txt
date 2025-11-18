@@ -1,3 +1,5 @@
 symptoms api: https://api.zaynax.health/doctor_service//public/doctors/suggested-symptoms
 
 suggest medicine: https://api.zaynax.health/product_service//medicine/brand/prescription_recomended_new?query=n
+
+api: http://202.4.106.52:8191/api
