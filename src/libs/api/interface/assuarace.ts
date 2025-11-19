@@ -1,4 +1,5 @@
 export interface IAllAppoinmentdata {
+  totalCount: any;
   appointments: never[];
   name: string;
   phone: string;
@@ -24,6 +25,7 @@ export interface Medicine {
 }
 
 export interface Appoinmentdata {
+  status?: string;
   employeeDepartment: string;
   employeeName: string;
   id: string;
@@ -45,16 +47,9 @@ export interface MedicalDocument {
   url: string;
 }
 
-export interface UserPolicyDocument {
-  documentName: string;
-  url: string;
-}
 
 export interface AppoinmentUpdatePayload {
-  medicalAppointmentDate: string;
-  testAppointmentDate: string;
-  diagnosticInfo: string;
-  comment: string;
+ 
 }
 
 export interface IAuth {
@@ -74,15 +69,6 @@ export interface UserData {
   name: string;
   phone: string;
   userType: string;
-}
-interface AddPolicyDataDTO {
-  policyNumber: string;
-  policyOwnerName: string;
-  mobile: string;
-  gender: string;
-  address: string;
-  applicantsType: string;
-  requiredTest: string;
 }
 
 export interface IResponse {

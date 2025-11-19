@@ -21,7 +21,7 @@ export const AppoinmentListModal: FC<PropsType> = ({ isOpen, onClose }) => {
       setLoading(true);
       setError(null);
       try {
-        const res = await assuranceAPI.getAllAppointments();
+        const res = await assuranceAPI.getAllAppointments(query);
 
         const normalized: Appoinmentdata[] = Array.isArray(res.data)
           ? (res.data as Appoinmentdata[])

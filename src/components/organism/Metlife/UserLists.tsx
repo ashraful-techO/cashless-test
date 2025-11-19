@@ -18,6 +18,7 @@ const ClientTableHeader: string[] = [
   " Complaints",
   " Medicine name",
   "Qty",
+  "Status",
 ];
 
 export const UserLists: FC<PropsType> = ({

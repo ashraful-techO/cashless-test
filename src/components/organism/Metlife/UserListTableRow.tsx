@@ -77,6 +77,10 @@ export const UserListTableRow: FC<PropsType> = ({ data, slNo }) => {
           )}
         </div>
       </td>
+
+      <td className="p-4 border-b border-blue-gray-50 max-w-[140px] truncate">
+        <p className="text-xs truncate">{data?.status || "-"}</p>
+      </td>
     </>
   );
 };

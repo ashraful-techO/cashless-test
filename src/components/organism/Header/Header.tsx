@@ -88,8 +88,8 @@ export const Header = () => {
         {/* {isMedicalUser && <MedicalAssessmentFilter />} */}
         <MetlifeFilter />
         <div className="flex justify-center gap-2">
-          {/* <ExportButton /> */}
-          {isMetlifeUser && <MetlifeAddUser />}
+          <ExportButton />
+          {/* {isMetlifeUser && <MetlifeAddUser />} */}
           
         </div>
       </div>

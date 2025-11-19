@@ -15,18 +15,17 @@ export default function StatusSelect() {
   const isCallCenterUser = userData?.userType === "CallCenter";
   const isMedicalUser = userData?.userType === "Doctor";
 
-  const [medicalStatus, setMedicalStatus] = useState("");
-  const [testStatus, setTestStatus] = useState("");
+  const [status, setStatus] = useState("");
 
   // Sync local state when URL changes
   useEffect(() => {
-    const mStatus = searchParams.get("medicalStatus") || "";
-    const tStatus = searchParams.get("testStatus") || "";
-    setMedicalStatus(mStatus);
-    setTestStatus(tStatus);
+    const deliveryStatus = searchParams.get("status") || "";
+    setStatus(deliveryStatus);
+
+    // console.log({ deliveryStatus });
   }, [searchParams]);
 
-  const handleChange = (key: "medicalStatus" | "testStatus", value: string) => {
+  const handleChange = (key: "status", value: string) => {
     const newQuery = new URLSearchParams(searchParams.toString());
 
     if (value) {
@@ -43,32 +42,18 @@ export default function StatusSelect() {
   return (
     <>
       <div>
-        <label className="block text-sm font-medium mb-1">Medical Status</label>
+        <label className="block text-sm font-medium mb-1">Status</label>
         <select
-          value={medicalStatus}
-          onChange={(e) => handleChange("medicalStatus", e.target.value)}
+          value={status}
+          onChange={(e) => handleChange("status", e.target.value)}
           className="border rounded px-3 py-2 text-sm"
         >
           <option value="">Select</option>
-          <option value="NA">N/A</option>
           <option value="PENDING">PENDING</option>
 
           <option value="COMPLETED">COMPLETED</option>
-        </select>
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium mb-1">Test Status</label>
-        <select
-          value={testStatus}
-          onChange={(e) => handleChange("testStatus", e.target.value)}
-          className="border rounded px-3 py-2 text-sm"
-        >
-          <option value="">Select</option>
-          <option value="NA">N/A</option>
-          <option value="PENDING">PENDING</option>
-
-          <option value="COMPLETED">COMPLETED</option>
+          <option value="POSTPONED">POSTPONED</option>
+          <option value="CANCELLED">CANCELLED</option>
         </select>
       </div>
     </>

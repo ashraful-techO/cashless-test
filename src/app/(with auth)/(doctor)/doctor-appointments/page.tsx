@@ -1,62 +1,55 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import { assuranceAPI } from "@/libs/api";
 import { AllAppointmentsList } from "@/components/organism/MedicalAssessment/AllAppointmentsList";
-import {
-  IAllAppoinmentdata,
-  Appoinmentdata,
-} from "@/libs/api/interface/assuarace";
+import { assuranceAPI } from "@/libs/api";
+import { IAllAppoinmentdata } from "@/libs/api/interface/assuarace";
 
-const MedicalAssessment = () => {
-  const { data: session, status } = useSession(); // get session
-  const [data, setData] = useState<IAllAppoinmentdata | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [selectData, setSelectData] = useState<Appoinmentdata | null>(null);
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
-  // Fetch appointments only if user is authenticated
-  const fetchAppointments = async () => {
-    setLoading(true);
-    try {
-      const res = await assuranceAPI.getAllAppointments();
-      setData(res.data);
-    } catch (err) {
-      console.error(err);
-      setData(null); // optional: clear data on error
-    }
-    setLoading(false);
-  };
+const AllAppointments = () => {
+ const [tableDataLoading, setTableDataLoading] = useState(false);
+ const [tableData, setTableData] = useState<IAllAppoinmentdata | null>(null);
+ const [selectedData, setSelectedData] = useState<any>(null);
 
-  // Fetch when session is authenticated
-  useEffect(() => {
-    if (status === "authenticated") {
-      fetchAppointments();
-    }
-  }, [status]);
+ const searchParams = useSearchParams();
+ const query = Object.fromEntries(searchParams.entries());
 
-  // Clear local state on logout
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      setData(null);
-      setSelectData(null);
-    }
-  }, [status]);
+ const { page, fromDate, toDate, search, medicalStatus, testStatus } = query;
 
-  if (status === "loading") return <p>Loading session...</p>;
+   const getTableData = async () => {
+     setTableDataLoading(true);
+     // if (!query?.csAppointmentStatus) query.csAppointmentStatus = "PENDING";
+
+     try {
+       const { success, data, message } = await assuranceAPI.getAllAppointments(
+         query
+       );
+
+       if (success) setTableData(data);
+     } catch (err) {
+       console.log(err);
+     } finally {
+       setTableDataLoading(false);
+     }
+   };
+
+   useEffect(() => {
+     getTableData();
+   }, [page, fromDate, toDate, search, medicalStatus, testStatus]);
 
   return (
     <div>
       {/* Your existing logout button stays elsewhere */}
 
       <AllAppointmentsList
-        data={data}
-        loading={loading}
-        updateData={fetchAppointments}
-        setSelectData={setSelectData}
+        data={tableData as any}
+        loading={tableDataLoading}
+        updateData={getTableData}
+        setSelectData={setSelectedData}
       />
     </div>
   );
 };
 
-export default MedicalAssessment;
+export default AllAppointments;

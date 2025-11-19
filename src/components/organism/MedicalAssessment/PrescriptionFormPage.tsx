@@ -94,12 +94,12 @@ export const PrescriptionFormPage: FC<PropsType> = ({
       onIdChange?.(id);
       return;
     }
-
+    console.log("Fetch Appointment by ID called");
     const timer = setTimeout(async () => {
       try {
         const res = await assuranceAPI.getAppointmentById(id);
         const d = res.data;
-
+        console.log("Fetch Appointment by ID called 2");
         if (!d) {
           onIdChange?.(id);
           return;

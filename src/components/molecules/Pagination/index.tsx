@@ -3,6 +3,21 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { CSSProperties, FC } from "react";
 import { Items } from "./Items";
 
+export interface PaginProps {
+  currentPage: number;
+  totalPages: number;
+  totalCount?: number;
+  className?: string;
+  style?: CSSProperties;
+  customClickHandler?: (page: number) => void;
+}
+
+// Pagination.defaultProps = {
+// 	currentPage: 1,
+// 	totalPages: 1,
+// 	totalCount: 0,
+// };
+
 export const Pagination: FC<PaginProps> = (props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -35,17 +50,6 @@ export const Pagination: FC<PaginProps> = (props) => {
   );
 };
 
-export interface PaginProps {
-  currentPage: number;
-  totalPages: number;
-  totalCount?: number;
-  className?: string;
-  style?: CSSProperties;
-  customClickHandler?: (page: number) => void;
-}
 
-// Pagination.defaultProps = {
-// 	currentPage: 1,
-// 	totalPages: 1,
-// 	totalCount: 0,
-// };
+
+

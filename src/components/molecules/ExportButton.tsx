@@ -10,7 +10,7 @@ const ExportButton: React.FC = () => {
     try {
       // const response = await fetch("/api/appointments/export"); //export API
 
-      const response = await fetch("/api/appointments/export");
+      const response = await fetch("appointments/export");
       if (!response.ok) throw new Error("Export failed");
 
       const blob = await response.blob();

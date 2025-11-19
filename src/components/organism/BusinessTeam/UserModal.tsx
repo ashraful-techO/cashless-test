@@ -24,62 +24,62 @@ interface PropsType {
   close: () => void;
   updateData: () => Promise<void>;
 }
-export const UserModal: FC<PropsType> = ({ selectdata, close, updateData }) => {
+// export const UserModal: FC<PropsType> = ({ selectdata, close, updateData }) => {
   // console.log({ selectdata });
-  const [loading, setIsLoading] = useState(false);
-  const [medicalSchedule, setMedicalSchedule] = useState<Date>(() =>
-    getLocalDate(selectdata?.medicalAppointmentDate)
-  );
-  const [testSchedule, setTestSchedule] = useState<Date>(() =>
-    getLocalDate(selectdata?.testAppointmentDate)
-  );
+  // const [loading, setIsLoading] = useState(false);
+  // const [medicalSchedule, setMedicalSchedule] = useState<Date>(() =>
+  //   getLocalDate(selectdata?.medicalAppointmentDate)
+  // );
+  // const [testSchedule, setTestSchedule] = useState<Date>(() =>
+  //   getLocalDate(selectdata?.testAppointmentDate)
+  // );
 
-  const [document, setDocument] = useState({
-    policyDoc:
-      selectdata?.medicalDocument?.find(
-        (el) =>
-          formatAddUnderscores(el?.documentName) === "USER_POLICY_SCREEN_SHOT"
-      )?.url || "",
-    medicalDoc:
-      selectdata?.medicalDocument?.find(
-        (el) => formatAddUnderscores(el?.documentName) === "MEDICAL_REPORT"
-      )?.url || "",
-  });
+  // const [document, setDocument] = useState({
+  //   policyDoc:
+  //     selectdata?.medicalDocument?.find(
+  //       (el) =>
+  //         formatAddUnderscores(el?.documentName) === "USER_POLICY_SCREEN_SHOT"
+  //     )?.url || "",
+  //   medicalDoc:
+  //     selectdata?.medicalDocument?.find(
+  //       (el) => formatAddUnderscores(el?.documentName) === "MEDICAL_REPORT"
+  //     )?.url || "",
+  // });
 
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-    setValue,
-    watch,
-  } = useForm<Appoinmentdata>();
+  // const {
+  //   handleSubmit,
+  //   control,
+  //   formState: { errors },
+  //   setValue,
+  //   watch,
+  // } = useForm<Appoinmentdata>();
 
-  const { testDocument } = watch();
+  // const { testDocument } = watch();
 
-  const submitHandler = async (value: Appoinmentdata) => {
-    setIsLoading(true);
-    try {
-      const { success, data, message } =
-        await assuranceAPI.updateAppoinmnetList(selectdata?.id, { ...value });
-      if (success) {
-        close();
-        updateData();
-        toastSuccess({ message: "Information updated successfully" });
-      }
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // const submitHandler = async (value: Appoinmentdata) => {
+  //   setIsLoading(true);
+  //   try {
+  //     const { success, data, message } =
+  //       await assuranceAPI.updateAppoinmnetList(selectdata?.id, { ...value });
+  //     if (success) {
+  //       close();
+  //       updateData();
+  //       toastSuccess({ message: "Information updated successfully" });
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    if (selectdata) {
-      Object.entries(selectdata || {}).forEach(([key, value]) => {
-        setValue(key as keyof Appoinmentdata, value);
-      });
-    }
-  }, [selectdata]);
+  // useEffect(() => {
+  //   if (selectdata) {
+  //     Object.entries(selectdata || {}).forEach(([key, value]) => {
+  //       setValue(key as keyof Appoinmentdata, value);
+  //     });
+  //   }
+  // }, [selectdata]);
 
   // useEffect(() => {
   // 	if (testDocument) {
@@ -87,24 +87,24 @@ export const UserModal: FC<PropsType> = ({ selectdata, close, updateData }) => {
   // 	}
   // }, [testDocument]);
 
-  useEffect(() => {
-    if (document) {
-      setValue("medicalDocument", [
-        {
-          documentName: "Medical Report",
-          url: document?.medicalDoc,
-        },
-        {
-          documentName: "User Policy Screen Shot",
-          url: document?.policyDoc,
-        },
-      ]);
-    }
-  }, [document]);
+  // useEffect(() => {
+  //   if (document) {
+  //     setValue("medicalDocument", [
+  //       {
+  //         documentName: "Medical Report",
+  //         url: document?.medicalDoc,
+  //       },
+  //       {
+  //         documentName: "User Policy Screen Shot",
+  //         url: document?.policyDoc,
+  //       },
+  //     ]);
+  //   }
+  // }, [document]);
 
-  return (
-    <ReusableModal onOpen={!!selectdata} onClose={close}>
-      <form action="" onSubmit={handleSubmit(submitHandler)}>
+  // return (
+    // <ReusableModal onOpen={!!selectdata} onClose={close}>
+      {/* <form action="" onSubmit={handleSubmit(submitHandler)}>
         <div className="p-6  bg-white rounded-md min-w-[800px] max-h-[600px] overflow-y-auto">
           <div className="grid grid-cols-2 gap-x-4 ">
             <ControlerFormInput
@@ -262,8 +262,8 @@ export const UserModal: FC<PropsType> = ({ selectdata, close, updateData }) => {
           <div className="mt-11 flex gap-4 justify-end">
             <Button type="submit">{loading ? "Updating..." : "Update"}</Button>
           </div>
-        </div>
-      </form>
-    </ReusableModal>
-  );
-};
+        </div> */}
+    //   </form>
+    // </ReusableModal>
+//   );
+// };

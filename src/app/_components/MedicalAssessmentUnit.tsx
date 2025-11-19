@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MedicalAssessmentLists } from "@/components/organism/MedicalAssessment";
+import { MedicalAppointments } from "@/components/organism/MedicalAssessment";
 import { IAllAppoinmentdata } from "@/libs/api/interface/assuarace";
 
 export const MedicalAssessmentUnit = () => {
@@ -11,7 +11,7 @@ export const MedicalAssessmentUnit = () => {
 
   return (
     <div className="flex-1 p-0 mt-0">
-      <MedicalAssessmentLists
+      <MedicalAppointments
         data={tableData as any}
         loading={tableDataLoading}
         selectdata={selectdata}

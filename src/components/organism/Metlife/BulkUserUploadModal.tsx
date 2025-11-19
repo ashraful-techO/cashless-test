@@ -34,7 +34,7 @@ export const BulkUserUploadModal: FC<PropsType> = ({
         const { success, data: value } = await csvToArray(text as string);
 
         if (success) {
-          const { success } = await assuranceAPI.addBancassuranceByCSV(value);
+          // const { success } = await assuranceAPI.addBancassuranceByCSV(value);
 
           if (success) {
             await updateData();

@@ -17,7 +17,7 @@ interface PropsType {
   setSelectData: (data: Appoinmentdata | null) => void;
 }
 
-export const MedicalAssessmentLists: FC<PropsType> = ({
+export const MedicalAppointments: FC<PropsType> = ({
   data,
   loading,
   selectdata,
@@ -32,6 +32,7 @@ export const MedicalAssessmentLists: FC<PropsType> = ({
   // Sync state when selectdata.id changes
   useEffect(() => {
     if (selectdata?.id) setAppointmentId(selectdata.id);
+    console.log("Set Appoinments called");
   }, [selectdata?.id]);
 
   // Fetch latest appointment **only after the first run**
@@ -48,6 +49,8 @@ export const MedicalAssessmentLists: FC<PropsType> = ({
         const res = await fetch(
           `/api/appointments/${appointmentId}` // or your API call
         );
+
+        console.log("fetchAppointment called");
         // Map data as needed
       } catch (err) {
         console.error("Failed to fetch appointment", err);

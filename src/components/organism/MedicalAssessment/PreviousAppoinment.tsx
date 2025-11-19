@@ -61,7 +61,7 @@ export const PreviousAppointment: React.FC<Props> = ({ appointmentId }) => {
 
       try {
         const res = await assuranceAPI.getAppointmentDetailsById(appointmentId);
-        console.log("API Response:", res.data);
+        console.log("Previous Appointments Response:", res.data);
 
         if (Array.isArray(res.data) && res.data.length > 0) {
           setAppointments(res.data);

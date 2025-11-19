@@ -7,21 +7,21 @@ import { useEffect, useState } from "react";
 
 const tabData = ["PENDING", "COMPLETED", "ALL"];
 export const AppoinmentFilter = () => {
-  const [active, setActive] = useState("PENDING");
+  const [active, setActive] = useState("");
 
   const router = useRouter();
   const searchParams = useSearchParams();
   const query = Object.fromEntries(searchParams.entries());
 
-  const handleTab = (el: string) => {
-    setActive(el);
-    router?.push(`?csAppointmentStatus=${el}`);
-  };
+  // const handleTab = (el: string) => {
+  //   setActive(el);
+  //   router?.push(`?csAppointmentStatus=${el}`);
+  // };
 
-  useEffect(() => {
-    if (!query?.csAppointmentStatus)
-      router?.push(`?csAppointmentStatus=PENDING`);
-  }, []);
+  // useEffect(() => {
+  //   if (!query?.csAppointmentStatus)
+  //     router?.push(`?csAppointmentStatus=PENDING`);
+  // }, []);
 
   return (
     <div className="grid grid-cols-12 items-end">

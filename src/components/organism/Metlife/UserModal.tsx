@@ -139,19 +139,19 @@ export const UserModal: FC<PropsType> = ({ selectdata, close, updateData }) => {
           <div className="grid grid-cols-2 gap-x-2">
             <ControlerFormInput
               control={control}
-              name="ID"
-              label="ID Number"
+              name="employeeId"
+              label="employeeId"
               disabled={isFormLocked}
             />
             <ControlerFormInput
               control={control}
-              name="Name"
+              name="employeeName"
               label="Employee Name"
               disabled={isFormLocked}
             />
             <ControlerFormInput
               control={control}
-              name="Mobile"
+              name="mobile"
               label="Mobile Number"
               disabled={isFormLocked}
             />
@@ -165,7 +165,7 @@ export const UserModal: FC<PropsType> = ({ selectdata, close, updateData }) => {
             <ControlerFormInput
               control={control}
               label="Department"
-              name="Department"
+              name="employeeDepartment"
               disabled={isFormLocked}
             />
           </div>
@@ -174,30 +174,30 @@ export const UserModal: FC<PropsType> = ({ selectdata, close, updateData }) => {
 
           <div className="mt-11 flex gap-4 justify-between">
             {/* Delete Button */}
-            <Button
+            {/* <Button
               color="red"
               onClick={openDeleteModal}
               disabled={isFormLocked || deleting}
             >
               Delete
-            </Button>
+            </Button> */}
 
-            <DeleteConfirmationModal
+            {/* <DeleteConfirmationModal
               open={modalOpen}
               close={closeDeleteModal}
               selectData={selectdata}
               updateData={updateData}
               parentClose={close} // this is the UserModal close
-            />
+            /> */}
 
             {/* Update Button */}
-            <Button
+            {/* <Button
               color="blue"
               type="submit"
               disabled={isFormLocked || loading}
             >
               {loading ? "Updating..." : "Update"}
-            </Button>
+            </Button> */}
           </div>
         </div>
       </form>

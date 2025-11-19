@@ -16,11 +16,11 @@ class AssuranceAPI extends BaseAPI {
   }
 
   /** Fetch paginated appointment list */
-  // getAppointmentList = (query: ParsedUrlQuery) => {
-  //   const optionalParams: Record<string, string> = {};
+  // getAllAppointments = (query: ParsedUrlQuery) => {
+  //   let optionalParams: any = {};
   //   if (!query?.page) optionalParams["page"] = "1";
-
   //   const params = updateURLSearchParams(query, optionalParams);
+
   //   return this.get<BR<IAllAppoinmentdata>>(`appointments?${params}`);
   // };
 
@@ -71,6 +71,13 @@ class AssuranceAPI extends BaseAPI {
   /** Add to appoinments */
   addAppoinments = (payload: any) => {
     return this.post<BR<IResponse>>(`appointments`, payload);
+  };
+
+  getExportData = (query: ParsedUrlQuery) => {
+    let optionalParams: any = {};
+    const params = updateURLSearchParams(query, optionalParams);
+
+    return this.get(`appointments/export`);
   };
 
   /** Add Bancassurance by CSV / JSON upload */

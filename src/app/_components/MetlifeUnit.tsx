@@ -72,21 +72,21 @@ export const MetlifeUnit = () => {
         setSelectData={setSelectedData} // <-- Fix
       />
 
-      {createUserModal && (
+      {/* {createUserModal && (
         <CreateSingleUser
           open={createUserModal}
           close={() => setCreateUserModal(false)}
           updateData={getTableData}
         />
-      )}
+      )} */}
 
-      {bulkUserModal && (
+      {/* {bulkUserModal && (
         <BulkUserUploadModal
           open={bulkUserModal}
           close={() => setBulkUserModal(false)}
           updateData={getTableData}
         />
-      )}
+      )} */}
 
       {/* Open modal for selected row */}
       {selectedData && (

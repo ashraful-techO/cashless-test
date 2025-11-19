@@ -1,14 +1,11 @@
 "use client";
 
 import {
-  BusinessTeamFilter,
   UserLists,
-  UserModal,
 } from "@/components/organism/BusinessTeam";
-import { CreateSingleUser } from "@/components/organism/BusinessTeam/CreateSingleUser";
 import { assuranceAPI } from "@/libs/api";
 import { IAllAppoinmentdata } from "@/libs/api/interface/assuarace";
-import { Button } from "@material-tailwind/react";
+
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -23,11 +20,10 @@ export const BusinessTeamUnit = () => {
 
   const {
     page,
-    csAppointmentStatus,
+  
     fromDate,
     toDate,
     search,
-    medicalStatus,
     testStatus,
   } = query;
 
@@ -70,21 +66,21 @@ export const BusinessTeamUnit = () => {
         // selectdata={selectdata}
       />
 
-      {createUserModal && (
+      {/* {createUserModal && (
         <CreateSingleUser
           open={createUserModal}
           close={() => setCreateUserModal(false)}
           updateData={getTableData}
         />
-      )}
+      )} */}
 
-      {selectdata && (
+      {/* {selectdata && (
         <UserModal
           selectdata={selectdata}
           close={() => setSelectData(null)}
           updateData={getTableData}
         />
-      )}
+      )} */}
     </div>
   );
 };

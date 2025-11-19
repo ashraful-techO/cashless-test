@@ -2,7 +2,6 @@
 
 import {
   AppoinmentFilter,
-  AppoinmentListModal,
   AppoinmentLists,
 } from "@/components/organism/Appoinmets";
 import { assuranceAPI } from "@/libs/api";
@@ -65,15 +64,16 @@ export const AppoinmentUnit = () => {
         data={tableData as any}
         loading={tableDataLoading}
         setSelectData={setSelectData}
+        updateData={async () => {}}
       />
 
-      {selectdata && (
+      {/* {selectdata && (
         <AppoinmentListModal
           selectdata={selectdata}
           close={() => setSelectData(null)}
           updateData={getTableData}
         />
-      )}
+      )} */}
     </div>
   );
 };
